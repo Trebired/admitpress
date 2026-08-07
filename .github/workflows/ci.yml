@@ -12,11 +12,14 @@ jobs:
   check:
     runs-on: ubuntu-latest
     container: fedora:44
+    env:
+      CARGO_HOME: /usr/local/cargo
+      RUSTUP_HOME: /usr/local/rustup
     steps:
       - name: Install system dependencies
         run: |
           dnf install -y --setopt=install_weak_deps=False \
-            git curl cmake gcc-c++ mold rpm-build \
+            git curl cmake gcc-c++ clang mold rpm-build \
             extra-cmake-modules kf6-kirigami-devel kf6-qqc2-desktop-style \
             qt6-qtbase-devel qt6-qtdeclarative-devel qt6-qtwayland-devel \
             cups-client librsvg2-tools poppler-utils \
@@ -24,8 +27,9 @@ jobs:
 
       - name: Install Rust
         run: |
-          curl -fsSL https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain stable
-          echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
+          curl -fsSL https://sh.rustup.rs | sh -s -- -y --profile minimal \
+            --default-toolchain stable --no-modify-path
+          echo "$CARGO_HOME/bin" >> "$GITHUB_PATH"
 
       - name: Install Bun
         run: |

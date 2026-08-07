@@ -3,6 +3,8 @@ set -euo pipefail
 
 project_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 outdir="${1:-$project_root/dist}"
+mkdir -p "$outdir"
+outdir="$(cd "$outdir" && pwd)"
 meta="$project_root/packaging/linux/meta.sh"
 version="$("$meta" version)"
 name="$("$meta" binaryName)"

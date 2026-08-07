@@ -14,18 +14,22 @@ jobs:
   rpm:
     runs-on: ubuntu-latest
     container: fedora:44
+    env:
+      CARGO_HOME: /usr/local/cargo
+      RUSTUP_HOME: /usr/local/rustup
     steps:
       - name: Install system dependencies
         run: |
           dnf install -y --setopt=install_weak_deps=False \
-            git curl cmake gcc-c++ mold rpm-build \
+            git curl cmake gcc-c++ clang mold rpm-build \
             extra-cmake-modules kf6-kirigami-devel kf6-qqc2-desktop-style \
             qt6-qtbase-devel qt6-qtdeclarative-devel qt6-qtwayland-devel
 
       - name: Install Rust
         run: |
-          curl -fsSL https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain stable
-          echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
+          curl -fsSL https://sh.rustup.rs | sh -s -- -y --profile minimal \
+            --default-toolchain stable --no-modify-path
+          echo "$CARGO_HOME/bin" >> "$GITHUB_PATH"
 
       - uses: actions/checkout@v7
 
@@ -43,19 +47,23 @@ jobs:
   deb:
     runs-on: ubuntu-latest
     container: debian:trixie
+    env:
+      CARGO_HOME: /usr/local/cargo
+      RUSTUP_HOME: /usr/local/rustup
     steps:
       - name: Install system dependencies
         run: |
           apt-get update
           apt-get install -y --no-install-recommends \
-            git ca-certificates curl build-essential cmake mold dpkg-dev \
+            git ca-certificates curl build-essential clang mold cmake dpkg-dev \
             extra-cmake-modules libkirigami-dev libkf6qqc2desktopstyle-dev \
             qt6-base-dev qt6-declarative-dev qt6-tools-dev qt6-wayland
 
       - name: Install Rust
         run: |
-          curl -fsSL https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain stable
-          echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
+          curl -fsSL https://sh.rustup.rs | sh -s -- -y --profile minimal \
+            --default-toolchain stable --no-modify-path
+          echo "$CARGO_HOME/bin" >> "$GITHUB_PATH"
 
       - uses: actions/checkout@v7
 
@@ -73,6 +81,9 @@ jobs:
   appimage:
     runs-on: ubuntu-latest
     container: debian:trixie
+    env:
+      CARGO_HOME: /usr/local/cargo
+      RUSTUP_HOME: /usr/local/rustup
     steps:
       - name: Install system dependencies
         run: |
@@ -88,8 +99,9 @@ jobs:
 
       - name: Install Rust
         run: |
-          curl -fsSL https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain stable
-          echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
+          curl -fsSL https://sh.rustup.rs | sh -s -- -y --profile minimal \
+            --default-toolchain stable --no-modify-path
+          echo "$CARGO_HOME/bin" >> "$GITHUB_PATH"
 
       - uses: actions/checkout@v7
 
