@@ -1,0 +1,27 @@
+[package]
+name = "ticket-kde"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+build = "build.rs"
+autobins = false
+
+[[bin]]
+name = "admitpress"
+path = "src/main.rs"
+
+[dependencies]
+anyhow.workspace = true
+chrono.workspace = true
+serde_json.workspace = true
+ticket-core = { path = "../ticket-core" }
+cxx = "1.0"
+cxx-qt = "0.9"
+cxx-qt-lib = { version = "0.9", features = ["qt_full"] }
+cxx-qt-lib-extras = "0.9"
+rust-i18n = "4.2.1"
+
+[build-dependencies]
+cxx-qt-build = { version = "0.9", features = ["link_qt_object_files"] }
+serde_json.workspace = true

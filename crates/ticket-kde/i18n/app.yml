@@ -1,0 +1,857 @@
+_version: 2
+"January":
+  en: "January"
+  cs: "leden"
+"February":
+  en: "February"
+  cs: "únor"
+"March":
+  en: "March"
+  cs: "březen"
+"April":
+  en: "April"
+  cs: "duben"
+"May":
+  en: "May"
+  cs: "květen"
+"June":
+  en: "June"
+  cs: "červen"
+"July":
+  en: "July"
+  cs: "červenec"
+"August":
+  en: "August"
+  cs: "srpen"
+"September":
+  en: "September"
+  cs: "září"
+"October":
+  en: "October"
+  cs: "říjen"
+"November":
+  en: "November"
+  cs: "listopad"
+"December":
+  en: "December"
+  cs: "prosinec"
+"Mon":
+  en: "Mon"
+  cs: "Po"
+"Tue":
+  en: "Tue"
+  cs: "Út"
+"Wed":
+  en: "Wed"
+  cs: "St"
+"Thu":
+  en: "Thu"
+  cs: "Čt"
+"Fri":
+  en: "Fri"
+  cs: "Pá"
+"Sat":
+  en: "Sat"
+  cs: "So"
+"Sun":
+  en: "Sun"
+  cs: "Ne"
+"Add image":
+  en: "Add image"
+  cs: "Přidat obrázek"
+"Add new ticket":
+  en: "Add new ticket"
+  cs: "Přidat novou vstupenku"
+"Add price":
+  en: "Add price"
+  cs: "Přidat cenu"
+"Adjust counters":
+  en: "Adjust counters"
+  cs: "Upravit počítadla"
+"Adjust daily counter":
+  en: "Adjust daily counter"
+  cs: "Upravit denní počítadlo"
+"All":
+  en: "All"
+  cs: "Vše"
+"Already used in this ticket type":
+  en: "Already used in this ticket type"
+  cs: "Již použito v tomto typu vstupenky"
+"Apply":
+  en: "Apply"
+  cs: "Použít"
+"Both":
+  en: "Both"
+  cs: "Obě"
+"Group ticket":
+  en: "Group ticket"
+  cs: "Skupinová vstupenka"
+"Group name":
+  en: "Group name"
+  cs: "Název skupiny"
+"Cancel":
+  en: "Cancel"
+  cs: "Zrušit"
+"Close":
+  en: "Close"
+  cs: "Zavřít"
+"Center H":
+  en: "Center H"
+  cs: "Vycentrovat H"
+"Center V":
+  en: "Center V"
+  cs: "Vycentrovat V"
+"Classic":
+  en: "Classic"
+  cs: "Klasická"
+"Copy":
+  en: "Copy"
+  cs: "Kopírovat"
+"Paste":
+  en: "Paste"
+  cs: "Vložit"
+"Copy logs":
+  en: "Copy logs"
+  cs: "Kopírovat logy"
+"Counters":
+  en: "Counters"
+  cs: "Počítadla"
+"Create":
+  en: "Create"
+  cs: "Vytvořit"
+"Date":
+  en: "Date"
+  cs: "Datum"
+"Day deleted":
+  en: "Day deleted"
+  cs: "Den smazán"
+"Days":
+  en: "Days"
+  cs: "Dny"
+"Delete":
+  en: "Delete"
+  cs: "Smazat"
+"Delete day":
+  en: "Delete day"
+  cs: "Smazat den"
+"Delete ticket":
+  en: "Delete ticket"
+  cs: "Smazat vstupenku"
+"Discard":
+  en: "Discard"
+  cs: "Zahodit"
+"Edit":
+  en: "Edit"
+  cs: "Upravit"
+"Export":
+  en: "Export"
+  cs: "Export"
+"Export ticket":
+  en: "Export ticket"
+  cs: "Exportovat vstupenku"
+"Export ticket archive":
+  en: "Export ticket archive"
+  cs: "Exportovat archiv vstupenky"
+"Fields":
+  en: "Fields"
+  cs: "Pole"
+"Height, cm":
+  en: "Height, cm"
+  cs: "Výška, cm"
+"Horizontal":
+  en: "Horizontal"
+  cs: "Vodorovně"
+"Import":
+  en: "Import"
+  cs: "Import"
+"Import ticket archive":
+  en: "Import ticket archive"
+  cs: "Importovat archiv vstupenky"
+"Main menu":
+  en: "Main menu"
+  cs: "Hlavní menu"
+"No days selected":
+  en: "No days selected"
+  cs: "Nejsou vybrané žádné dny"
+"No fonts found":
+  en: "No fonts found"
+  cs: "Nebyla nalezena žádná písma"
+"No printer selected":
+  en: "No printer selected"
+  cs: "Není vybraná tiskárna"
+"No sales":
+  en: "No sales"
+  cs: "Žádné prodeje"
+"No tickets selected":
+  en: "No tickets selected"
+  cs: "Nejsou vybrané žádné vstupenky"
+"No tickets yet":
+  en: "No tickets yet"
+  cs: "Zatím žádné vstupenky"
+"Numbering":
+  en: "Numbering"
+  cs: "Číslování"
+"OK":
+  en: "OK"
+  cs: "OK"
+"Print group ticket":
+  en: "Print group ticket"
+  cs: "Vytisknout skupinovou vstupenku"
+"Print tickets":
+  en: "Print tickets"
+  cs: "Vytisknout vstupenky"
+"Recent Prints":
+  en: "Recent Prints"
+  cs: "Poslední tisky"
+"Today's activity":
+  en: "Today's activity"
+  cs: "Dnešní aktivita"
+"Search activity":
+  en: "Search activity"
+  cs: "Hledat v aktivitě"
+"All activity":
+  en: "All activity"
+  cs: "Veškerá aktivita"
+"Nothing matches this filter":
+  en: "Nothing matches this filter"
+  cs: "Filtru nic neodpovídá"
+"Printed":
+  en: "Printed"
+  cs: "Vytisknuto"
+"Recorded":
+  en: "Recorded"
+  cs: "Zaznamenáno"
+"Record only":
+  en: "Record only"
+  cs: "Pouze zaznamenat"
+"Refresh":
+  en: "Refresh"
+  cs: "Obnovit"
+"Remove price":
+  en: "Remove price"
+  cs: "Odebrat cenu"
+"Sales":
+  en: "Sales"
+  cs: "Prodeje"
+"Save":
+  en: "Save"
+  cs: "Uložit"
+"Save and leave":
+  en: "Save and leave"
+  cs: "Uložit a odejít"
+"Day details":
+  en: "Day details"
+  cs: "Detaily dne"
+"Month details":
+  en: "Month details"
+  cs: "Detaily měsíce"
+"Search currencies":
+  en: "Search currencies"
+  cs: "Hledat měny"
+"No currencies found":
+  en: "No currencies found"
+  cs: "Žádné měny nenalezeny"
+"Currency":
+  en: "Currency"
+  cs: "Měna"
+"Main currency":
+  en: "Main currency"
+  cs: "Hlavní měna"
+"Main currency updated":
+  en: "Main currency updated"
+  cs: "Hlavní měna aktualizována"
+"Choose a currency":
+  en: "Choose a currency"
+  cs: "Vyberte měnu"
+"Choose a main currency in Settings first.":
+  en: "Choose a main currency in Settings first."
+  cs: "Nejprve vyberte hlavní měnu v Nastavení."
+"Ticket prices are stored in this currency. You can sell and print in another currency from the print page.":
+  en: "Ticket prices are stored in this currency. You can sell and print in another currency from the print page."
+  cs: "Ceny vstupenek jsou uloženy v této měně. Prodávat a tisknout můžete i v jiné měně ze stránky tisku."
+"All prices are in ":
+  en: "All prices are in "
+  cs: "Všechny ceny jsou v "
+"rate loading...":
+  en: "rate loading..."
+  cs: "načítám kurz..."
+"Edit prices":
+  en: "Edit prices"
+  cs: "Upravit ceny"
+"Prices updated":
+  en: "Prices updated"
+  cs: "Ceny aktualizovány"
+"No sales in this period":
+  en: "No sales in this period"
+  cs: "V tomto období žádné prodeje"
+"Search fonts":
+  en: "Search fonts"
+  cs: "Hledat písma"
+"Select image":
+  en: "Select image"
+  cs: "Vybrat obrázek"
+"Settings":
+  en: "Settings"
+  cs: "Nastavení"
+"Start printing":
+  en: "Start printing"
+  cs: "Začít tisknout"
+"Ticket":
+  en: "Ticket"
+  cs: "Vstupenka"
+"Tickets":
+  en: "Tickets"
+  cs: "Vstupenky"
+"Today":
+  en: "Today"
+  cs: "Dnes"
+"Undo":
+  en: "Undo"
+  cs: "Zpět"
+"Unsaved changes":
+  en: "Unsaved changes"
+  cs: "Neuložené změny"
+"Vertical":
+  en: "Vertical"
+  cs: "Svisle"
+"Width, cm":
+  en: "Width, cm"
+  cs: "Šířka, cm"
+"Border":
+  en: "Border"
+  cs: "Okraj"
+"Count":
+  en: "Count"
+  cs: "Počet"
+"Font":
+  en: "Font"
+  cs: "Písmo"
+"Font size":
+  en: "Font size"
+  cs: "Velikost písma"
+"Image":
+  en: "Image"
+  cs: "Obrázek"
+"Line, mm":
+  en: "Line, mm"
+  cs: "Čára, mm"
+"Minimum digits":
+  en: "Minimum digits"
+  cs: "Minimální počet číslic"
+"Name":
+  en: "Name"
+  cs: "Název"
+"Optional prefix":
+  en: "Optional prefix"
+  cs: "Volitelná předpona"
+"Optional suffix":
+  en: "Optional suffix"
+  cs: "Volitelná přípona"
+"Orientation":
+  en: "Orientation"
+  cs: "Orientace"
+"Prefix":
+  en: "Prefix"
+  cs: "Předpona"
+"Price":
+  en: "Price"
+  cs: "Cena"
+"Prices":
+  en: "Prices"
+  cs: "Ceny"
+"Reason":
+  en: "Reason"
+  cs: "Důvod"
+"Selected field":
+  en: "Selected field"
+  cs: "Vybrané pole"
+"Set next number":
+  en: "Set next number"
+  cs: "Nastavit další číslo"
+"Static text":
+  en: "Static text"
+  cs: "Statický text"
+"Dynamic ":
+  en: "Dynamic "
+  cs: "Dynamické "
+"Delete selected field":
+  en: "Delete selected field"
+  cs: "Smazat vybrané pole"
+"Delete selected fields":
+  en: "Delete selected fields"
+  cs: "Smazat vybraná pole"
+"Preview sample data":
+  en: "Preview sample data"
+  cs: "Náhled ukázkových dat"
+"Redo":
+  en: "Redo"
+  cs: "Znovu"
+"Select a field on the canvas.":
+  en: "Select a field on the canvas."
+  cs: "Vyberte pole na plátně."
+"Snap to centered grid":
+  en: "Snap to centered grid"
+  cs: "Přichytávat na středovou mřížku"
+"Step":
+  en: "Step"
+  cs: "Krok"
+"Suffix":
+  en: "Suffix"
+  cs: "Přípona"
+"Text":
+  en: "Text"
+  cs: "Text"
+"The application returned invalid data: ":
+  en: "The application returned invalid data: "
+  cs: "Aplikace vrátila neplatná data: "
+"Development output is enabled. Print actions create SVG files under ":
+  en: "Development output is enabled. Print actions create SVG files under "
+  cs: "Vývojový výstup je zapnutý. Tiskové akce vytvářejí SVG soubory v "
+"/development-prints and do not send paper to a printer.":
+  en: "/development-prints and do not send paper to a printer."
+  cs: "/development-prints a neposílají papír do tiskárny."
+"Create a ticket, position dynamic fields, add prices, and start printing.":
+  en: "Create a ticket, position dynamic fields, add prices, and start printing."
+  cs: "Vytvořte vstupenku, umístěte dynamická pole, přidejte ceny a začněte tisknout."
+"prices":
+  en: "prices"
+  cs: "cen"
+"Next today: ":
+  en: "Next today: "
+  cs: "Další dnes: "
+"Printer: ":
+  en: "Printer: "
+  cs: "Tiskárna: "
+"No physical printer selected":
+  en: "No physical printer selected"
+  cs: "Není vybraná fyzická tiskárna"
+"More":
+  en: "More"
+  cs: "Více"
+"Development output is enabled. This screen creates files without using the printer.":
+  en: "Development output is enabled. This screen creates files without using the printer."
+  cs: "Vývojový výstup je zapnutý. Tato obrazovka vytváří soubory bez použití tiskárny."
+"Revert last sale":
+  en: "Revert last sale"
+  cs: "Vrátit poslední prodej"
+"Revert sale":
+  en: "Revert sale"
+  cs: "Vrátit prodej"
+"Revert the last sale?":
+  en: "Revert the last sale?"
+  cs: "Vrátit poslední prodej?"
+"Last sale reverted":
+  en: "Last sale reverted"
+  cs: "Poslední prodej vrácen"
+"Every counter this sale advanced goes back by the number of tickets it sold. Print records are kept, and each correction is stored as an audit entry.":
+  en: "Every counter this sale advanced goes back by the number of tickets it sold. Print records are kept, and each correction is stored as an audit entry."
+  cs: "Každé počítadlo, které tento prodej posunul, se vrátí o počet prodaných vstupenek. Záznamy tisku zůstávají a každá oprava se uloží jako auditní záznam."
+"Name this sale (optional)":
+  en: "Name this sale (optional)"
+  cs: "Pojmenujte prodej (volitelné)"
+"Sale name":
+  en: "Sale name"
+  cs: "Název prodeje"
+"Rendering ticket":
+  en: "Rendering ticket"
+  cs: "Vykresluji vstupenku"
+"Printing ticket":
+  en: "Printing ticket"
+  cs: "Tisknu vstupenku"
+"Recording tickets":
+  en: "Recording tickets"
+  cs: "Zapisuji vstupenky"
+"Rendering group ticket":
+  en: "Rendering group ticket"
+  cs: "Vykresluji skupinovou vstupenku"
+"Printing group ticket":
+  en: "Printing group ticket"
+  cs: "Tisknu skupinovou vstupenku"
+"Rendering tickets":
+  en: "Rendering tickets"
+  cs: "Vykresluji vstupenky"
+"Printing tickets":
+  en: "Printing tickets"
+  cs: "Tisknu vstupenky"
+"Ticket rendered":
+  en: "Ticket rendered"
+  cs: "Vstupenka vykreslena"
+"Ticket submitted to CUPS":
+  en: "Ticket submitted to CUPS"
+  cs: "Vstupenka odeslána do CUPS"
+"Tickets recorded":
+  en: "Tickets recorded"
+  cs: "Vstupenky zapsány"
+"Group ticket rendered":
+  en: "Group ticket rendered"
+  cs: "Skupinová vstupenka vykreslena"
+"Group ticket submitted":
+  en: "Group ticket submitted"
+  cs: "Skupinová vstupenka odeslána"
+"Ticket output completed":
+  en: "Ticket output completed"
+  cs: "Výstup vstupenek dokončen"
+"Ticket jobs submitted":
+  en: "Ticket jobs submitted"
+  cs: "Tiskové úlohy odeslány"
+"Select at least one ticket.":
+  en: "Select at least one ticket."
+  cs: "Vyberte alespoň jednu vstupenku."
+"Select at least two tickets for a group ticket.":
+  en: "Select at least two tickets for a group ticket."
+  cs: "Pro skupinovou vstupenku vyberte alespoň dvě vstupenky."
+"Delete ":
+  en: "Delete "
+  cs: "Smazat "
+" for this ticket?":
+  en: " for this ticket?"
+  cs: " pro tuto vstupenku?"
+"This removes that date's print records and per-price counters.":
+  en: "This removes that date's print records and per-price counters."
+  cs: "Odstraní tiskové záznamy a počítadla cen pro toto datum."
+"Delete ticket prompt prefix":
+  en: "Delete \""
+  cs: "Smazat \""
+"Delete ticket prompt suffix":
+  en: "\" and all saved history?"
+  cs: "\" a celou uloženou historii?"
+"Previous month":
+  en: "Previous month"
+  cs: "Předchozí měsíc"
+"Next month":
+  en: "Next month"
+  cs: "Další měsíc"
+"Date format":
+  en: "Date format"
+  cs: "Formát data"
+"Decrease":
+  en: "Decrease"
+  cs: "Snížit"
+"Edit ":
+  en: "Edit "
+  cs: "Upravit "
+"Failed":
+  en: "Failed"
+  cs: "Selhalo"
+"Images":
+  en: "Images"
+  cs: "Obrázky"
+"No":
+  en: "No"
+  cs: "Ne"
+"None":
+  en: "None"
+  cs: "Žádné"
+"Number":
+  en: "Number"
+  cs: "Číslo"
+"Print":
+  en: "Print"
+  cs: "Tisk"
+"Properties":
+  en: "Properties"
+  cs: "Vlastnosti"
+"Quantity":
+  en: "Quantity"
+  cs: "Množství"
+"Start":
+  en: "Start"
+  cs: "Začátek"
+"Static":
+  en: "Static"
+  cs: "Statické"
+"Ticket editor":
+  en: "Ticket editor"
+  cs: "Editor vstupenky"
+"Ticket name":
+  en: "Ticket name"
+  cs: "Název vstupenky"
+"Total":
+  en: "Total"
+  cs: "Celkem"
+"archives":
+  en: "archives"
+  cs: "archivy"
+"Ticket created":
+  en: "Ticket created"
+  cs: "Vstupenka vytvořena"
+"The new ticket starts empty. Add fields and prices in the editor.":
+  en: "The new ticket starts empty. Add fields and prices in the editor."
+  cs: "Nová vstupenka začíná prázdná. Pole a ceny přidáte v editoru."
+"Counter correction":
+  en: "Counter correction"
+  cs: "Oprava počítadla"
+"Counters adjusted":
+  en: "Counters adjusted"
+  cs: "Počítadla upravena"
+"Date: ":
+  en: "Date: "
+  cs: "Datum: "
+"Set next":
+  en: "Set next"
+  cs: "Nastavit další"
+"This changes counters only. Existing print records are kept unchanged.":
+  en: "This changes counters only. Existing print records are kept unchanged."
+  cs: "Toto mění jen počítadla. Existující tiskové záznamy zůstanou beze změny."
+"You have unsaved editor changes.":
+  en: "You have unsaved editor changes."
+  cs: "V editoru máte neuložené změny."
+"Save before leaving, or discard the changes and continue.":
+  en: "Save before leaving, or discard the changes and continue."
+  cs: "Před odchodem změny uložte, nebo je zahoďte a pokračujte."
+"Print #":
+  en: "Print #"
+  cs: "Tisk #"
+"Print details":
+  en: "Print details"
+  cs: "Detail tisku"
+"Queued":
+  en: "Queued"
+  cs: "Ve frontě"
+"Completed":
+  en: "Completed"
+  cs: "Dokončeno"
+"Yes":
+  en: "Yes"
+  cs: "Ano"
+"Status":
+  en: "Status"
+  cs: "Stav"
+"Successful":
+  en: "Successful"
+  cs: "Úspěšné"
+"Printer":
+  en: "Printer"
+  cs: "Tiskárna"
+"Job":
+  en: "Job"
+  cs: "Úloha"
+"Output":
+  en: "Output"
+  cs: "Výstup"
+"Print failed":
+  en: "Print failed"
+  cs: "Tisk selhal"
+"Printer diagnostics failed: ":
+  en: "Printer diagnostics failed: "
+  cs: "Diagnostika tiskárny selhala: "
+"No CUPS queues detected. Add the PF8t in KDE System Settings first.":
+  en: "No CUPS queues detected. Add the PF8t in KDE System Settings first."
+  cs: "Nebyly nalezeny žádné fronty CUPS. Nejprve přidejte PF8t v nastavení systému KDE."
+"Logs copied":
+  en: "Logs copied"
+  cs: "Logy zkopírovány"
+"Fixing printer":
+  en: "Fixing printer"
+  cs: "Opravuji tiskárnu"
+"Printer diagnostics have not been loaded yet.":
+  en: "Printer diagnostics have not been loaded yet."
+  cs: "Diagnostika tiskárny zatím nebyla načtena."
+"No printer problems reported by CUPS.":
+  en: "No printer problems reported by CUPS."
+  cs: "CUPS nehlásí žádné problémy s tiskárnou."
+"Print actions currently create SVG files only.":
+  en: "Print actions currently create SVG files only."
+  cs: "Tiskové akce aktuálně vytvářejí pouze SVG soubory."
+"Physical printing is enabled. Print actions are sent to the selected CUPS queue.":
+  en: "Physical printing is enabled. Print actions are sent to the selected CUPS queue."
+  cs: "Fyzický tisk je zapnutý. Tiskové akce se odesílají do vybrané fronty CUPS."
+"Printer queue":
+  en: "Printer queue"
+  cs: "Fronta tiskárny"
+"Printer queue updated":
+  en: "Printer queue updated"
+  cs: "Fronta tiskárny aktualizována"
+"Development output, do not use paper":
+  en: "Development output, do not use paper"
+  cs: "Vývojový výstup, nepoužívat papír"
+"Printing mode updated":
+  en: "Printing mode updated"
+  cs: "Režim tisku aktualizován"
+"Data directory":
+  en: "Data directory"
+  cs: "Datový adresář"
+"Choose...":
+  en: "Choose..."
+  cs: "Vybrat..."
+"Changing the directory opens or creates a separate ":
+  en: "Changing the directory opens or creates a separate "
+  cs: "Změna adresáře otevře nebo vytvoří samostatnou databázi "
+" database there.":
+  en: " database there."
+  cs: " v tomto umístění."
+"Detected CUPS queues":
+  en: "Detected CUPS queues"
+  cs: "Nalezené fronty CUPS"
+"Printer debug":
+  en: "Printer debug"
+  cs: "Ladění tiskárny"
+"Checking":
+  en: "Checking"
+  cs: "Kontroluji"
+"Check":
+  en: "Check"
+  cs: "Zkontrolovat"
+"This can start CUPS and enable or accept jobs for the selected printer queue. ":
+  en: "This can start CUPS and enable or accept jobs for the selected printer queue. "
+  cs: "Toto může spustit CUPS a povolit nebo přijímat úlohy pro vybranou tiskovou frontu. "
+"Run fix":
+  en: "Run fix"
+  cs: "Spustit opravu"
+"Manual correction":
+  en: "Manual correction"
+  cs: "Ruční oprava"
+"Counter adjusted":
+  en: "Counter adjusted"
+  cs: "Počítadlo upraveno"
+"Price: ":
+  en: "Price: "
+  cs: "Cena: "
+"Current next number: ":
+  en: "Current next number: "
+  cs: "Aktuální další číslo: "
+"This does not delete or rewrite prior print records. The correction is saved as an audit entry.":
+  en: "This does not delete or rewrite prior print records. The correction is saved as an audit entry."
+  cs: "Toto nesmaže ani nepřepíše předchozí tiskové záznamy. Oprava se uloží jako auditní záznam."
+"Export...":
+  en: "Export..."
+  cs: "Exportovat..."
+"Ticket archive exported":
+  en: "Ticket archive exported"
+  cs: "Archiv vstupenky exportován"
+"Ticket archive imported":
+  en: "Ticket archive imported"
+  cs: "Archiv vstupenky importován"
+"Image imported":
+  en: "Image imported"
+  cs: "Obrázek importován"
+" fields selected":
+  en: " fields selected"
+  cs: " polí vybráno"
+"Date + time":
+  en: "Date + time"
+  cs: "Datum a čas"
+"Full date + time":
+  en: "Full date + time"
+  cs: "Úplné datum a čas"
+"ISO date":
+  en: "ISO date"
+  cs: "ISO datum"
+"ISO date + time":
+  en: "ISO date + time"
+  cs: "ISO datum a čas"
+"Time only":
+  en: "Time only"
+  cs: "Jen čas"
+"Saving ticket":
+  en: "Saving ticket"
+  cs: "Ukládám vstupenku"
+"Ticket saved":
+  en: "Ticket saved"
+  cs: "Vstupenka uložena"
+"Printer fix cancelled":
+  en: "Printer fix cancelled"
+  cs: "Oprava tiskárny zrušena"
+"Ticket deleted":
+  en: "Ticket deleted"
+  cs: "Vstupenka smazána"
+"This day is locked because it already has sales and is not today.":
+  en: "This day is locked because it already has sales and is not today."
+  cs: "Tento den je uzamčený, protože už má prodeje a není dnes."
+"Show empty":
+  en: "Show empty"
+  cs: "Zobrazit prázdné"
+"Export days":
+  en: "Export days"
+  cs: "Exportovat dny"
+"Excel workbook":
+  en: "Excel workbook"
+  cs: "Sešit Excel"
+"OpenDocument spreadsheet":
+  en: "OpenDocument spreadsheet"
+  cs: "Tabulka OpenDocument"
+"Days exported":
+  en: "Days exported"
+  cs: "Dny exportovány"
+"Repair printer as administrator":
+  en: "Repair printer as administrator"
+  cs: "Opravit tiskárnu jako správce"
+"The repair runs as one elevated batch, so your desktop asks for the administrator password once when it starts.":
+  en: "The repair runs as one elevated batch, so your desktop asks for the administrator password once when it starts."
+  cs: "Oprava probíhá jako jedna dávka se zvýšenými právy, takže si prostředí vyžádá heslo správce jednou na začátku."
+"Repair printer":
+  en: "Repair printer"
+  cs: "Opravit tiskárnu"
+"Repair as administrator":
+  en: "Repair as administrator"
+  cs: "Opravit jako správce"
+"Repairing printer as administrator":
+  en: "Repairing printer as administrator"
+  cs: "Opravuji tiskárnu jako správce"
+"Administrator repair attempted":
+  en: "Administrator repair attempted"
+  cs: "Pokus o opravu jako správce proběhl"
+"Printer repair attempted":
+  en: "Printer repair attempted"
+  cs: "Pokus o opravu tiskárny proběhl"
+"Backups":
+  en: "Backups"
+  cs: "Zálohy"
+"Back up now":
+  en: "Back up now"
+  cs: "Zálohovat nyní"
+"Backup created":
+  en: "Backup created"
+  cs: "Záloha vytvořena"
+"The backup failed.":
+  en: "The backup failed."
+  cs: "Záloha selhala."
+"No backup has been made yet.":
+  en: "No backup has been made yet."
+  cs: "Zatím nebyla vytvořena žádná záloha."
+"Every three hours the database and the ticket artwork are packed into an archive. Copies older than a month are removed automatically.":
+  en: "Every three hours the database and the ticket artwork are packed into an archive. Copies older than a month are removed automatically."
+  cs: "Každé tři hodiny se databáze a grafika vstupenek zabalí do archivu. Kopie starší než měsíc se automaticky odstraní."
+"Reset selection":
+  en: "Reset selection"
+  cs: "Zrušit výběr"
+"Nothing has been sold or recorded today yet.":
+  en: "Nothing has been sold or recorded today yet."
+  cs: "Dnes zatím nebylo nic prodáno ani zaznamenáno."
+"No prices yet":
+  en: "No prices yet"
+  cs: "Zatím žádné ceny"
+"Last backup":
+  en: "Last backup"
+  cs: "Poslední záloha"
+"Stored copies":
+  en: "Stored copies"
+  cs: "Uložených kopií"
+"Folder":
+  en: "Folder"
+  cs: "Složka"
+"Made by ":
+  en: "Made by "
+  cs: "Vytvořila organizace "
+"Version ":
+  en: "Version "
+  cs: "Verze "
+" is available":
+  en: " is available"
+  cs: " je k dispozici"
+"A new version is available":
+  en: "A new version is available"
+  cs: "Je k dispozici nová verze"
+" has been released. This copy is version ":
+  en: " has been released. This copy is version "
+  cs: " byla vydána. Tato kopie má verzi "
+"You can install it at:":
+  en: "You can install it at:"
+  cs: "Nainstalovat ji můžete na:"
+" does not install updates itself.":
+  en: " does not install updates itself."
+  cs: " aktualizace sám neinstaluje."
+"Open the release page":
+  en: "Open the release page"
+  cs: "Otevřít stránku vydání"
+

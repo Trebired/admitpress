@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    container: fedora:44
+    steps:
+      - name: Install system dependencies
+        run: |
+          dnf install -y --setopt=install_weak_deps=False \
+            git curl cmake gcc-c++ mold rpm-build \
+            extra-cmake-modules kf6-kirigami-devel kf6-qqc2-desktop-style \
+            qt6-qtbase-devel qt6-qtdeclarative-devel qt6-qtwayland-devel \
+            cups-client librsvg2-tools poppler-utils \
+            polkit breeze-icon-theme adwaita-icon-theme
+
+      - name: Install Rust
+        run: |
+          curl -fsSL https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain stable
+          echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
+
+      - name: Install Bun
+        run: |
+          curl -fsSL https://bun.sh/install | bash
+          echo "$HOME/.bun/bin" >> "$GITHUB_PATH"
+
+      - uses: actions/checkout@v7
+
+      - name: Install workspace
+        run: bun install --frozen-lockfile
+
+      - name: Code Discipline
+        run: bun run discipline
+
+      - name: Typecheck
+        run: bun run typecheck
+
+      - name: Verify
+        run: bun run verify:raw

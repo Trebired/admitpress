@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>app.ticket.native</id>
+  <name>AdmitPress</name>
+  <summary>Design and print sequential admission tickets</summary>
+  <metadata_license>MIT</metadata_license>
+  <project_license>AGPL-3.0-only</project_license>
+  <description>
+    <p>AdmitPress designs admission tickets and prints them in order, so every ticket that leaves the printer carries the next number in the sequence.</p>
+    <p>Features:</p>
+    <ul>
+      <li>A drag and drop layout editor for text, images, prices, dates and ticket numbers</li>
+      <li>Several prices per ticket, each with its own daily counter</li>
+      <li>Group sales that print or record many tickets at once under one name</li>
+      <li>Sales in a second currency, converted with exchange rates fetched online</li>
+      <li>A day and month sales overview that exports to spreadsheets</li>
+      <li>Printing through CUPS, or preview only while you set the layout up</li>
+      <li>Automatic backups of the database and the ticket artwork every three hours</li>
+    </ul>
+  </description>
+  <launchable type="desktop-id">app.ticket.native.desktop</launchable>
+  <provides>
+    <binary>admitpress</binary>
+  </provides>
+  <categories>
+    <category>Office</category>
+    <category>Utility</category>
+  </categories>
+  <keywords>
+    <keyword>ticket</keyword>
+    <keyword>admission</keyword>
+    <keyword>printing</keyword>
+    <keyword>numbering</keyword>
+  </keywords>
+  <developer id="app.ticket">
+    <name>Miroslav Machynka</name>
+  </developer>
+  <content_rating type="oars-1.1"/>
+  <releases>
+    <release version="0.1.0" date="2026-08-06"/>
+  </releases>
+</component>

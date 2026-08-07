@@ -1,0 +1,50 @@
+{
+  "author": "Miroslav Machynka (Trebired)",
+  "config": {
+    "organization": {
+      "displayName": "Trebired",
+      "name": "trebired",
+      "website": "https://trebired.com"
+    },
+    "app": {
+      "binaryName": "admitpress",
+      "displayName": "AdmitPress",
+      "name": "admitpress",
+      "website": "https://admitpress.com"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/trebired/admitpress"
+  },
+  "devDependencies": {
+    "@trebired/code-discipline": "^5.3.0",
+    "@types/bun": "^1.3.14",
+    "@types/node": "^24.13.3",
+    "typescript": "^6.0.3"
+  },
+  "engines": {
+    "bun": ">=1.0.0"
+  },
+  "license": "AGPL-3.0-only",
+  "name": "admitpress-workspace",
+  "packageManager": "bun@1.3.14",
+  "private": true,
+  "scripts": {
+    "build": "code-discipline gate -- bun run build:raw",
+    "build:raw": "bun tools/native/build.ts",
+    "dev": "code-discipline gate -- bun run dev:raw",
+    "dev:raw": "bun tools/native/run.ts",
+    "discipline": "code-discipline check",
+    "discipline:fix": "code-discipline fix",
+    "gate": "code-discipline gate",
+    "report": "bun tools/reports/cli.ts",
+    "test": "code-discipline gate -- bun run test:raw",
+    "test:raw": "bun tools/native/test.ts",
+    "typecheck": "tsc --noEmit",
+    "verify": "code-discipline gate -- bun run verify:raw",
+    "verify:raw": "bun tools/verify/run.ts"
+  },
+  "type": "module",
+  "version": "0.1.0"
+}

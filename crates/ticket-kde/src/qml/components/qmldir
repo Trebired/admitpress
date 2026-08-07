@@ -1,0 +1,25 @@
+singleton AppIcons 1.0 icon_theme.qml
+AppDialog 1.0 app_dialog.qml
+BackgroundTasks 1.0 background_tasks.qml
+BackupScheduler 1.0 backup_scheduler.qml
+BusyPopup 1.0 busy_popup.qml
+DangerButton 1.0 danger/button.qml
+DangerMenuItem 1.0 danger/menu_item.qml
+DialogActions 1.0 dialog_actions.qml
+EmptyState 1.0 empty_state.qml
+DateSelector 1.0 date_selector.qml
+DaySalesTable 1.0 day_sales_table.qml
+FontFamilyPicker 1.0 font_family_picker.qml
+CurrencyPicker 1.0 currency_picker.qml
+singleton LocaleText 1.0 locale_text.qml
+singleton PageColumn 1.0 page_column.qml
+MainNavigation 1.0 main_navigation.qml
+NumberInput 1.0 number_input.qml
+QuantityStepper 1.0 quantity_stepper.qml
+ReleaseWatcher 1.0 release_watcher.qml
+SectionBorder 1.0 section_border.qml
+TicketNumberLabel 1.0 ticket/number/display.qml
+TicketNumberGrid 1.0 ticket/number/selector.qml
+singleton TextFormat 1.0 text_format.qml
+singleton MoneyFormat 1.0 money_format.qml
+singleton FieldClipboard 1.0 field_clipboard.qml

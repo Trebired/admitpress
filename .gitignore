@@ -1,0 +1,10 @@
+/target
+/build
+/node_modules
+/.trebired/code-discipline/generated
+/data/*
+!/data/.gitkeep
+application.sqlite
+*.sqlite-shm
+*.sqlite-wal
+dist/

@@ -1,0 +1,125 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  rpm:
+    runs-on: ubuntu-latest
+    container: fedora:44
+    steps:
+      - name: Install system dependencies
+        run: |
+          dnf install -y --setopt=install_weak_deps=False \
+            git curl cmake gcc-c++ mold rpm-build \
+            extra-cmake-modules kf6-kirigami-devel kf6-qqc2-desktop-style \
+            qt6-qtbase-devel qt6-qtdeclarative-devel qt6-qtwayland-devel
+
+      - name: Install Rust
+        run: |
+          curl -fsSL https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain stable
+          echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
+
+      - uses: actions/checkout@v7
+
+      - name: Build release binary
+        run: cargo build -p ticket-kde --release
+
+      - name: Build RPM
+        run: ./packaging/linux/rpm.sh dist
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: rpm
+          path: dist/*.rpm
+
+  deb:
+    runs-on: ubuntu-latest
+    container: debian:trixie
+    steps:
+      - name: Install system dependencies
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends \
+            git ca-certificates curl build-essential cmake mold dpkg-dev \
+            extra-cmake-modules libkirigami-dev libkf6qqc2desktopstyle-dev \
+            qt6-base-dev qt6-declarative-dev qt6-tools-dev qt6-wayland
+
+      - name: Install Rust
+        run: |
+          curl -fsSL https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain stable
+          echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
+
+      - uses: actions/checkout@v7
+
+      - name: Build release binary
+        run: cargo build -p ticket-kde --release
+
+      - name: Build DEB
+        run: ./packaging/linux/deb.sh dist
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: deb
+          path: dist/*.deb
+
+  appimage:
+    runs-on: ubuntu-latest
+    container: debian:trixie
+    steps:
+      - name: Install system dependencies
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends \
+            git ca-certificates curl file zsync desktop-file-utils \
+            build-essential clang mold cmake pkg-config \
+            extra-cmake-modules libkirigami-dev libkf6qqc2desktopstyle-dev \
+            qt6-base-dev qt6-declarative-dev qt6-tools-dev qt6-wayland \
+            qml6-module-org-kde-kirigami qml6-module-org-kde-desktop \
+            qml6-module-qtquick-controls qml6-module-qtquick-dialogs \
+            kf6-breeze-icon-theme adwaita-icon-theme libqt6svg6 qt6-svg-plugins
+
+      - name: Install Rust
+        run: |
+          curl -fsSL https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain stable
+          echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
+
+      - uses: actions/checkout@v7
+
+      - name: Build release binary
+        run: cargo build -p ticket-kde --release
+
+      - name: Build AppImage
+        run: ./packaging/linux/appimage.sh dist
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: appimage
+          path: dist/*.AppImage
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: [rpm, deb, appimage]
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/download-artifact@v8
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v3
+        with:
+          files: |
+            dist/*.rpm
+            dist/*.deb
+            dist/*.AppImage
+          fail_on_unmatched_files: true

@@ -1,0 +1,5 @@
+module app.ticket.native
+optional plugin app_ticket_native
+classname app_ticket_native_plugin
+typeinfo plugin.qmltypes
+prefer :/qt/qml/app/ticket/native/

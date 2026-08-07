@@ -1,0 +1,24 @@
+Package: @NAME@
+Version: @VERSION@
+Architecture: @ARCHITECTURE@
+Maintainer: Miroslav Machynka (Trebired) <noreply@trebired.com>
+Section: utils
+Priority: optional
+Homepage: https://github.com/trebired/admitpress
+Depends: qml6-module-org-kde-kirigami,
+ qml6-module-org-kde-desktop,
+ qml6-module-qtquick-controls,
+ qml6-module-qtquick-dialogs,
+ qt6-wayland,
+ cups-client,
+ librsvg2-bin,
+ poppler-utils,
+ polkitd,
+ pkexec,
+ kf6-breeze-icon-theme
+Recommends: adwaita-icon-theme, xdg-desktop-portal-gtk
+Description: Design and print sequential admission tickets
+ This application designs admission tickets and prints them in order, so every
+ ticket that leaves the printer carries the next number in the sequence.
+ It keeps a daily counter for each price, records every sale, and submits
+ print jobs to CUPS.
