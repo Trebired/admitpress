@@ -1,5 +1,12 @@
 import { spawnSync } from "node:child_process";
-import { copyFileSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import {
+  copyFileSync,
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { homedir } from "node:os";
 import { projectConfigString } from "../project/config.js";
@@ -140,8 +147,28 @@ function refreshDesktopCaches(root: string): void {
   }
 }
 
+function systemDesktopEntry(): boolean {
+  return ["/usr/local/share", "/usr/share"].some((root) =>
+    existsSync(join(root, "applications", `${APP_ID}.desktop`)),
+  );
+}
+
+function removeUserDesktopIntegration(root: string): void {
+  const targets = [
+    join(root, "applications", `${APP_ID}.desktop`),
+    join(root, "metainfo", `${APP_ID}.metainfo.xml`),
+    join(root, "icons", "hicolor", "scalable", "apps", `${APP_ID}.svg`),
+  ];
+  for (const target of targets) rmSync(target, { force: true });
+}
+
 function installDesktopIntegration(): void {
   const root = dataHome();
+  if (systemDesktopEntry()) {
+    removeUserDesktopIntegration(root);
+    refreshDesktopCaches(root);
+    return;
+  }
   installDesktopFile();
   copyPackagedFile(
     `${APP_ID}.svg`,

@@ -3,6 +3,7 @@ Type=Application
 Name=AdmitPress
 Comment=Design and print sequential admission tickets
 Exec=admitpress
+TryExec=admitpress
 Icon=app.ticket.native
 Categories=Office;Utility;
 Keywords=ticket;tickets;admission;print;printing;entry;pass;receipt;numbering;

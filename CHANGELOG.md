@@ -25,5 +25,6 @@ This project follows semantic versioning once published.
 - Changed printer repair to report a clear error when pkexec is missing instead of hanging on a password prompt that never appears.
 - Changed the window icon to follow the light and dark theme at runtime.
 - Changed the README into a landing page with the logo, screenshots and package tables.
+- Fixed the development launcher shadowing an installed copy. Running the app from the desktop started a build in the source tree instead of the installed binary, because the development entry in the user data directory takes precedence over the packaged one.
 - Fixed page switching stalling for about a second because CUPS queues were discovered on the user interface thread.
 - Fixed editor fields shifting when selected with a single click.
