@@ -19,7 +19,7 @@ jobs:
       - name: Install system dependencies
         run: |
           dnf install -y --setopt=install_weak_deps=False \
-            git curl cmake gcc-c++ clang mold rpm-build \
+            git which curl cmake gcc-c++ clang mold rpm-build \
             extra-cmake-modules kf6-kirigami-devel kf6-qqc2-desktop-style \
             qt6-qtbase-devel qt6-qtdeclarative-devel qt6-qtwayland-devel \
             cups-client librsvg2-tools poppler-utils \

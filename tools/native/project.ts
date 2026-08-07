@@ -41,7 +41,7 @@ function runOrExit(
 }
 
 function findExecutable(command: string): string | null {
-  const result = spawnSync("which", [command], {
+  const result = spawnSync("sh", ["-c", `command -v ${command}`], {
       cwd: PROJECT_ROOT,
       encoding: "utf8",
   });
