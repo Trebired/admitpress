@@ -4,6 +4,12 @@ All notable changes to AdmitPress will be documented here.
 
 This project follows semantic versioning once published.
 
+## Unreleased
+
+- Changed `bun run dev` so it never writes outside the repository. It previously installed a desktop entry, an icon and AppStream metadata into the user data directory and refreshed the desktop caches.
+- Added a Development sandbox check to `bun run verify` that fails when the native tooling reaches outside the repository.
+- Fixed the development launcher shadowing an installed copy. Running the application from the desktop started a build in the source tree instead of the installed binary, because the entry in the user data directory takes precedence over the packaged one.
+
 ## 0.1.0
 
 - Added the ticket editor with static text, image, price, date, number, group name, and group item fields across a classic and a group layout.
@@ -25,6 +31,5 @@ This project follows semantic versioning once published.
 - Changed printer repair to report a clear error when pkexec is missing instead of hanging on a password prompt that never appears.
 - Changed the window icon to follow the light and dark theme at runtime.
 - Changed the README into a landing page with the logo, screenshots and package tables.
-- Fixed the development launcher shadowing an installed copy. Running the app from the desktop started a build in the source tree instead of the installed binary, because the development entry in the user data directory takes precedence over the packaged one.
 - Fixed page switching stalling for about a second because CUPS queues were discovered on the user interface thread.
 - Fixed editor fields shifting when selected with a single click.

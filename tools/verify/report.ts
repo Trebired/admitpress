@@ -8,6 +8,7 @@ import {
   checkShellScripts,
   checkToml,
 } from "./files.js";
+import { checkDevelopmentSandbox } from "./sandbox.js";
 import { checkQmlBackendContract, checkQmlModuleContract } from "./qml.js";
 import { checkSvgAndRasterization } from "./raster.js";
 import { checkSourcePolicy } from "./source_policy.js";
@@ -28,6 +29,7 @@ function collectChecks(): Check[] {
     checkSourcePolicy(),
     checkPackagingMetadata(),
     checkShellScripts(),
+    checkDevelopmentSandbox(),
     checkQmlBackendContract(),
     checkQmlModuleContract(),
     ...checkNativeTools(),

@@ -1,14 +1,6 @@
 import { spawnSync } from "node:child_process";
-import {
-  copyFileSync,
-  existsSync,
-  mkdirSync,
-  readFileSync,
-  rmSync,
-  writeFileSync,
-} from "node:fs";
-import { dirname, join, resolve } from "node:path";
-import { homedir } from "node:os";
+import { readFileSync } from "node:fs";
+import { join, resolve } from "node:path";
 import { projectConfigString } from "../project/config.js";
 
 type CommandOptions = {
@@ -99,92 +91,12 @@ function runCargo(args: string[]): void {
   runOrExit("cargo", args, { env: nativeEnvironment() });
 }
 
-function escapedDesktopExec(value: string): string {
-  return value.replace(/\\/g, "\\\\").replace(/ /g, "\\ ");
-}
-
-function desktopExecCommand(args: string[]): string {
-  return args.map(escapedDesktopExec).join(" ");
-}
-
-function dataHome(): string {
-  return process.env.XDG_DATA_HOME ?? join(homedir(), ".local", "share");
-}
-
-function installDesktopFile(): void {
-  const target = join(dataHome(), "applications", `${APP_ID}.desktop`);
-  const source = join(PROJECT_ROOT, "packaging", "fedora", `${APP_ID}.desktop`);
-  const template = readFileSync(source, "utf8");
-  const content = template.replace(
-    /^Exec=.*$/m,
-    `Exec=${desktopExecCommand(["bun", "--cwd", PROJECT_ROOT, "run", "dev"])}`,
-  );
-  mkdirSync(dirname(target), { recursive: true });
-  writeFileSync(target, content, "utf8");
-}
-
-function copyPackagedFile(sourceName: string, targetDirectory: string): void {
-  const source = join(PROJECT_ROOT, "packaging", "fedora", sourceName);
-  const target = join(targetDirectory, sourceName);
-  mkdirSync(dirname(target), { recursive: true });
-  copyFileSync(source, target);
-}
-
-function refreshDesktopCaches(root: string): void {
-  const applications = join(root, "applications");
-  const icons = join(root, "icons", "hicolor");
-  rmSync(join(icons, "icon-theme.cache"), { force: true });
-
-  const refreshes: [string, string[]][] = [
-    ["update-desktop-database", [applications]],
-    ["gtk-update-icon-cache", ["--force", "--quiet", icons]],
-    ["kbuildsycoca6", ["--noincremental"]],
-  ];
-
-  for (const [command, args] of refreshes) {
-    if (!findExecutable(command)) continue;
-    spawnSync(command, args, { cwd: PROJECT_ROOT, stdio: "ignore" });
-  }
-}
-
-function systemDesktopEntry(): boolean {
-  return ["/usr/local/share", "/usr/share"].some((root) =>
-    existsSync(join(root, "applications", `${APP_ID}.desktop`)),
-  );
-}
-
-function removeUserDesktopIntegration(root: string): void {
-  const targets = [
-    join(root, "applications", `${APP_ID}.desktop`),
-    join(root, "metainfo", `${APP_ID}.metainfo.xml`),
-    join(root, "icons", "hicolor", "scalable", "apps", `${APP_ID}.svg`),
-  ];
-  for (const target of targets) rmSync(target, { force: true });
-}
-
-function installDesktopIntegration(): void {
-  const root = dataHome();
-  if (systemDesktopEntry()) {
-    removeUserDesktopIntegration(root);
-    refreshDesktopCaches(root);
-    return;
-  }
-  installDesktopFile();
-  copyPackagedFile(
-    `${APP_ID}.svg`,
-    join(root, "icons", "hicolor", "scalable", "apps"),
-  );
-  copyPackagedFile(`${APP_ID}.metainfo.xml`, join(root, "metainfo"));
-  refreshDesktopCaches(root);
-}
-
 export {
   APP_ID,
   BINARY_NAME,
   PROJECT_ROOT,
   commandStatus,
   findExecutable,
-  installDesktopIntegration,
   nativeEnvironment,
   requireCommands,
   runCargo,

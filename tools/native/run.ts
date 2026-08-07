@@ -1,4 +1,4 @@
-import { BINARY_NAME, installDesktopIntegration, runCargo } from "./project.js";
+import { BINARY_NAME, runCargo } from "./project.js";
 
 if (typeof process.getuid === "function" && process.getuid() === 0) {
   console.error(
@@ -8,5 +8,4 @@ if (typeof process.getuid === "function" && process.getuid() === 0) {
   process.exit(1);
 }
 
-installDesktopIntegration();
 runCargo(["run", "-p", "ticket-kde", "--bin", BINARY_NAME, "--", ...Bun.argv.slice(2)]);
