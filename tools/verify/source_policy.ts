@@ -15,7 +15,7 @@ function readPackagePolicyNames(): BannedNamePolicy[] {
   if (!isObject(config)) throw new Error("package.json#config must be set");
   return [
     {
-      allowedPaths: documentationPaths(),
+      allowedPaths: new Set(),
       value: packageConfigValue(config, "organization"),
     },
     {
@@ -27,15 +27,10 @@ function readPackagePolicyNames(): BannedNamePolicy[] {
 
 function applicationNameAllowedPaths(): Set<string> {
   return new Set([
-      ...documentationPaths(),
       "Cargo.toml",
       "crates/ticket-kde/Cargo.toml",
       "packaging/fedora/app.ticket.native.desktop",
   ]);
-}
-
-function documentationPaths(): Set<string> {
-  return new Set(["CHANGELOG.md", "CONTRIBUTING.md", "README.md"]);
 }
 
 function packageConfigValue(
@@ -129,6 +124,7 @@ function checkPolicyFile(
   ) {
     failures.push(`${policyPath} contains a forbidden time field name`);
   }
+  if (policyPath.endsWith(".md")) return;
   for (const bannedName of bannedNames) {
     if (
       lowered.includes(bannedName.value) &&

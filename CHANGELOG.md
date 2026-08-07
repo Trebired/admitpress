@@ -6,6 +6,8 @@ This project follows semantic versioning once published.
 
 ## Unreleased
 
+- Added operator and development guides under `docs/`, covering ticket design, prices and counters, selling, sales and export, currency, printing, backups, the architecture, the commands, recipes, packaging, releasing and the pitfalls in this codebase.
+- Changed the source policy so Markdown documentation may name the product and the organization.
 - Changed `bun run dev` so it never writes outside the repository. It previously installed a desktop entry, an icon and AppStream metadata into the user data directory and refreshed the desktop caches.
 - Added a Development sandbox check to `bun run verify` that fails when the native tooling reaches outside the repository.
 - Fixed the development launcher shadowing an installed copy. Running the application from the desktop started a build in the source tree instead of the installed binary, because the entry in the user data directory takes precedence over the packaged one.

@@ -28,6 +28,7 @@ AdmitPress is a Trebired product, licensed under the GNU Affero General Public L
 - [Concepts](#concepts)
 - [Configuration](#configuration)
 - [Runtime](#runtime)
+- [Documentation](#documentation)
 - [Contributing](#contributing)
 - [What It Does Not Do](#what-it-does-not-do)
 
@@ -141,9 +142,24 @@ Every three hours, and once at startup, the application reads the latest release
 
 With development output enabled, print actions write SVG and PDF files instead of reaching the printer. With it disabled, jobs go to the selected CUPS queue. Failed jobs are recorded and appear in the day's activity.
 
+## Documentation
+
+Full guides live in [`docs/`](docs/README.md).
+
+| Using it | Building it |
+| --- | --- |
+| [Getting started](docs/using/start.md) | [Architecture](docs/development/architecture.md) |
+| [Designing tickets](docs/using/tickets.md) | [Setup](docs/development/setup.md) |
+| [Prices and counters](docs/using/prices.md) | [Commands](docs/development/commands.md) |
+| [Selling](docs/using/selling.md) | [Recipes](docs/development/recipes.md) |
+| [Sales and export](docs/using/sales.md) | [Packaging](docs/development/packaging.md) |
+| [Currency](docs/using/currency.md) | [Releasing](docs/development/releasing.md) |
+| [Printing](docs/using/printing.md) | [Pitfalls](docs/development/pitfalls.md) |
+| [Backups](docs/using/backups.md) | |
+
 ## Contributing
 
-The application is Rust and QML: a `ticket-core` crate holding the domain and storage, and a `ticket-kde` crate binding it to Qt 6 and Kirigami through cxx-qt. Bun runs the tooling, and Code Discipline gates every command. See [`CONTRIBUTING.md`](CONTRIBUTING.md) for the commands and the rules, and [`CHANGELOG.md`](CHANGELOG.md) for what has changed.
+The application is Rust and QML: a `ticket-core` crate holding the domain and storage, and a `ticket-kde` crate binding it to Qt 6 and Kirigami through cxx-qt. Bun runs the tooling, and Code Discipline gates every command. See [`CONTRIBUTING.md`](CONTRIBUTING.md) for the commands and the rules, [`docs/development/`](docs/development/architecture.md) for how the pieces fit, and [`CHANGELOG.md`](CHANGELOG.md) for what has changed.
 
 ## What It Does Not Do
 

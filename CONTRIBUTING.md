@@ -2,6 +2,12 @@
 
 AdmitPress is a Trebired product, licensed under AGPL-3.0-only. Contributions are accepted under those same terms.
 
+## Documentation
+
+[`docs/development/`](docs/development/architecture.md) covers the architecture,
+the commands, recipes for common changes, packaging, releasing, and the traps in
+this codebase worth knowing before you hit them.
+
 ## Runtime
 
 Bun is the runtime and package manager. Never use npm. The native side builds with cargo against Qt 6 and KDE Frameworks 6.
