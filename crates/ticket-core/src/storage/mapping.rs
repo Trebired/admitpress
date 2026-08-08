@@ -39,14 +39,15 @@ pub(super) fn map_field(row: &Row<'_>) -> rusqlite::Result<TicketField> {
             font_family: row.get(10)?,
             font_size_pt: row.get(11)?,
             font_weight: row.get(12)?,
-            horizontal_alignment: row.get(13)?,
-            vertical_alignment: row.get(14)?,
-            date_format: row.get(15)?,
-            prefix: row.get(16)?,
-            suffix: row.get(17)?,
-            sort_order: row.get(18)?,
-            recorded_at: row.get(19)?,
-            updated_at: row.get(20)?,
+            font_italic: row.get(13)?,
+            horizontal_alignment: row.get(14)?,
+            vertical_alignment: row.get(15)?,
+            date_format: row.get(16)?,
+            prefix: row.get(17)?,
+            suffix: row.get(18)?,
+            sort_order: row.get(19)?,
+            recorded_at: row.get(20)?,
+            updated_at: row.get(21)?,
     })
 }
 
@@ -151,6 +152,20 @@ pub(super) fn dynamic_kind_from_db(value: &str) -> DynamicKind {
         "bulk_total" => DynamicKind::BulkTotal,
         _ => DynamicKind::Price,
     }
+}
+
+pub(super) fn map_printer_profile(row: &Row<'_>) -> rusqlite::Result<PrinterProfile> {
+    Ok(PrinterProfile {
+            queue: row.get(0)?,
+            width_mm: row.get(1)?,
+            height_mm: row.get(2)?,
+            offset_x_mm: row.get(3)?,
+            offset_y_mm: row.get(4)?,
+            scale_x_percent: row.get(5)?,
+            scale_y_percent: row.get(6)?,
+            recorded_at: row.get(7)?,
+            updated_at: row.get(8)?,
+    })
 }
 
 pub(super) fn normalize_date_format(value: &str) -> &str {

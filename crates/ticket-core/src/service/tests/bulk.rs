@@ -189,6 +189,7 @@ fn test_field(
         font_family: "Noto Sans".into(),
         font_size_pt: 12.0,
         font_weight: 400,
+        font_italic: false,
         horizontal_alignment: "center".into(),
         vertical_alignment: "center".into(),
         date_format: "date".into(),

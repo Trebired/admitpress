@@ -1,5 +1,7 @@
 use super::*;
 
+const DEVELOPMENT_MODE_DEFAULT_ENV: &str = "TICKET_APP_DEVELOPMENT_MODE_DEFAULT";
+
 impl TicketService {
     pub fn open_default() -> Result<Self> {
         let data_dir = std::env::var_os("TICKET_APP_DATA_DIR")
@@ -17,6 +19,13 @@ impl TicketService {
     }
 
     pub fn open_at(data_dir: PathBuf) -> Result<Self> {
+        Self::open_at_with_development_default(data_dir, default_development_mode())
+    }
+
+    pub(super) fn open_at_with_development_default(
+        data_dir: PathBuf,
+        development_mode_default: bool,
+    ) -> Result<Self> {
         fs::create_dir_all(&data_dir).map_err(|_| TicketError::DataDirectoryNotWritable)?;
         let data_dir = fs::canonicalize(&data_dir).unwrap_or(data_dir);
         fs::create_dir_all(data_dir.join("tickets"))?;
@@ -30,12 +39,16 @@ impl TicketService {
         let development_mode = storage
         .get_setting("development_mode")?
         .map(|value| value != "false")
-        .unwrap_or(true);
+        .unwrap_or(development_mode_default);
         let selected_printer_queue = match storage.get_setting("selected_printer_queue")? {
             Some(value) => normalized_optional(value),
             None => default_printer_queue(),
         };
         let main_currency = storage.get_setting("main_currency")?.unwrap_or_default();
+        let ui_language = storage
+        .get_setting("ui_language")?
+        .and_then(|value| normalize_ui_language(&value).ok())
+        .unwrap_or_else(|| "en".to_owned());
 
         Ok(Self {
                 storage,
@@ -44,6 +57,7 @@ impl TicketService {
                 selected_printer_queue,
                 cached_printer_queues: Vec::new(),
                 main_currency,
+                ui_language,
         })
     }
 
@@ -59,6 +73,17 @@ impl TicketService {
         self.development_mode = enabled;
         self.storage
         .set_setting("development_mode", if enabled { "true" } else { "false" })
+    }
+
+    pub fn ui_language(&self) -> &str {
+        &self.ui_language
+    }
+
+    pub fn set_ui_language(&mut self, language: &str) -> Result<()> {
+        let normalized = normalize_ui_language(language)?;
+        self.storage.set_setting("ui_language", &normalized)?;
+        self.ui_language = normalized;
+        Ok(())
     }
 
     pub fn selected_printer_queue(&self) -> Option<&str> {
@@ -114,6 +139,7 @@ impl TicketService {
                 data_dir: self.data_dir.to_string_lossy().into_owned(),
                 main_currency: self.main_currency.clone(),
                 available_currencies: self.available_currencies(),
+                ui_language: self.ui_language.clone(),
         })
     }
 
@@ -163,5 +189,25 @@ impl TicketService {
                 })
         })
         .collect()
+    }
+}
+
+fn default_development_mode() -> bool {
+    std::env::var(DEVELOPMENT_MODE_DEFAULT_ENV)
+    .map(|value| {
+            matches!(
+                value.trim().to_ascii_lowercase().as_str(),
+                "1" | "true" | "yes" | "on"
+            )
+    })
+    .unwrap_or(false)
+}
+
+fn normalize_ui_language(language: &str) -> Result<String> {
+    let normalized = language.trim().to_lowercase().replace('-', "_");
+    match normalized.split('_').next().unwrap_or("en") {
+        "en" => Ok("en".to_owned()),
+        "cs" => Ok("cs".to_owned()),
+        _ => Err(anyhow!("unsupported language")),
     }
 }

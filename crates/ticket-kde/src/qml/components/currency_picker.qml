@@ -129,8 +129,7 @@ ColumnLayout {
           }
         }
 
-        Kirigami.PlaceholderMessage {
-          Layout.fillWidth: true
+        EmptyState {
           visible: currencyList.count === 0
           text: LocaleText.tr("No currencies found")
         }

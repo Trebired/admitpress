@@ -10,7 +10,12 @@ fn stamp_at(value: &str) -> NaiveDateTime {
 fn synthetic(names: &[&str]) -> Vec<(PathBuf, NaiveDateTime)> {
     let mut stored: Vec<(PathBuf, NaiveDateTime)> = names
     .iter()
-    .map(|name| (PathBuf::from(*name), backup_stamp(name).expect("name should parse")))
+    .map(|name| {
+            (
+                PathBuf::from(*name),
+                backup_stamp(name).expect("name should parse"),
+            )
+    })
     .collect();
     stored.sort_by(|left, right| left.1.cmp(&right.1));
     stored

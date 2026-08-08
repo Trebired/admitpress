@@ -35,6 +35,7 @@ QtObject {
         ticket: {
           name: props.ticketName,
           background_path: editor.backgroundPath || "",
+          printer_queue: editor.printerQueue || "",
           width_cm: logic.positiveNumber(props.widthValue, 5),
           height_cm: logic.positiveNumber(props.heightValue, 7),
           border_style: editor.borderStyle,
@@ -47,7 +48,10 @@ QtObject {
           number_suffix: props.numberSuffix,
         },
         fields: serializeFields(),
-        subtickets: TextFormat.serializeSubticketModel(subticketsModel),
+        subtickets: TextFormat.serializeSubticketModel(
+          subticketsModel,
+          root.appState.main_currency || ""
+        ),
     })
   }
 
@@ -65,6 +69,7 @@ QtObject {
     props.numberSuffix = ticket.number_suffix
     props.borderWidthValue = ticket.border_width_mm
     editor.backgroundPath = ticket.background_path
+    editor.printerQueue = ticket.printer_queue || ""
     editor.borderStyle = ticket.border_style
     editor.borderWidthMm = ticket.border_width_mm
 
@@ -73,6 +78,7 @@ QtObject {
     for (const field of state.fields) {
       const templateKind = field.template_kind === "bulk" ? "bulk" : "classic"
       field.template_kind = templateKind
+      logic.normalizeFieldRow(field)
       if (templateKind === "bulk") {
         if (!logic.isDeprecatedBulkTemplateField(field)) bulkFieldsModel.append(field)
       }
@@ -90,10 +96,12 @@ QtObject {
     const widthCm = logic.positiveNumber(props.widthValue, 5)
     const heightCm = logic.positiveNumber(props.heightValue, 7)
     const fieldsJson = JSON.stringify(serializeFields())
-    const subticketsJson = JSON.stringify(TextFormat.serializeSubticketModel(subticketsModel))
+    const subticketsJson = JSON.stringify(
+      TextFormat.serializeSubticketModel(subticketsModel, root.appState.main_currency || "")
+    )
     const started = root.runBackendBusy(LocaleText.tr("Saving ticket"), "save_ticket", function() {
         backend.saveTicketAsync(
-          editor.ticketId, props.ticketName, widthCm, heightCm, "",
+          editor.ticketId, props.ticketName, widthCm, heightCm, editor.printerQueue || "",
           editor.borderStyle, logic.parsedBorderWidthMm(), props.dpiValue,
           props.startValue, props.incrementValue, props.paddingValue,
           props.numberPrefix, props.numberSuffix, fieldsJson, subticketsJson

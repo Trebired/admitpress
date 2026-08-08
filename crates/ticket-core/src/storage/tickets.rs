@@ -1,5 +1,13 @@
 use super::*;
 
+const TICKET_SELECT: &str = "SELECT t.id, t.name, \
+COALESCE(profile.width_mm, t.width_mm), COALESCE(profile.height_mm, t.height_mm), \
+t.background_svg_path, t.printer_queue, \
+t.border_style, t.border_width_mm, t.dpi, t.number_start, t.number_increment, \
+t.number_padding, t.number_prefix, t.number_suffix, t.recorded_at, t.updated_at \
+FROM tickets t \
+LEFT JOIN printer_profiles profile ON profile.queue = TRIM(COALESCE(t.printer_queue, ''))";
+
 impl Storage {
     pub fn create_ticket(
         &self,
@@ -58,13 +66,23 @@ impl Storage {
         Ok(ticket)
     }
 
-    pub fn list_tickets(&self) -> Result<Vec<Ticket>> {
-        let mut statement = self.connection.prepare(
-            "SELECT id, name, width_mm, height_mm, background_svg_path, printer_queue, \
-            border_style, border_width_mm, dpi, number_start, number_increment, \
-            number_padding, number_prefix, number_suffix, recorded_at, updated_at \
-            FROM tickets ORDER BY updated_at DESC, name ASC",
+    pub fn set_ticket_printer_queue(
+        &self,
+        ticket_id: &str,
+        printer_queue: &str,
+        updated_at: &str,
+    ) -> Result<()> {
+        self.connection.execute(
+            "UPDATE tickets SET printer_queue = ?, updated_at = ? WHERE id = ?",
+            params![printer_queue, updated_at, ticket_id],
         )?;
+        Ok(())
+    }
+
+    pub fn list_tickets(&self) -> Result<Vec<Ticket>> {
+        let mut statement = self
+        .connection
+        .prepare(&format!("{TICKET_SELECT} ORDER BY t.updated_at DESC, t.name ASC"))?;
         let rows = statement.query_map([], map_ticket)?;
         rows.collect::<rusqlite::Result<Vec<_>>>()
         .map_err(Into::into)
@@ -73,10 +91,7 @@ impl Storage {
     pub fn get_ticket(&self, ticket_id: &str) -> Result<Option<Ticket>> {
         self.connection
         .query_row(
-            "SELECT id, name, width_mm, height_mm, background_svg_path, printer_queue, \
-            border_style, border_width_mm, dpi, number_start, number_increment, \
-            number_padding, number_prefix, number_suffix, recorded_at, updated_at \
-            FROM tickets WHERE id = ?",
+            &format!("{TICKET_SELECT} WHERE t.id = ?"),
             [ticket_id],
             map_ticket,
         )

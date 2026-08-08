@@ -44,61 +44,86 @@ Item {
           id: daysHeader
 
           Layout.fillWidth: true
+          spacing: Kirigami.Units.smallSpacing
 
           Controls.Label {
             text: LocaleText.tr("Sales")
             font.pointSize: Kirigami.Theme.defaultFont.pointSize + 1
           }
 
-          Controls.Label {
-            Layout.fillWidth: true
-            text: printPage.selectedDaySummaryText()
-            horizontalAlignment: Text.AlignRight
-            elide: Text.ElideRight
-            color: printPage.selectedDayCount() > 0
-            ? Kirigami.Theme.textColor
-            : Kirigami.Theme.disabledTextColor
-          }
+          Item { Layout.fillWidth: true }
 
-          Controls.CheckBox {
-            text: LocaleText.tr("Show empty")
-            checked: printPage.showEmptyDays
-            padding: 0
-            onClicked: printPage.setShowEmptyDays(checked)
-          }
+          RowLayout {
+            spacing: Kirigami.Units.largeSpacing
 
-          Controls.CheckBox {
-            text: LocaleText.tr("All")
-            enabled: printPage.hasSelectableDays()
-            padding: 0
-            tristate: true
-            checkState: printPage.allSelectionState()
-            onClicked: {
-              if (printPage.allSelectionState() === Qt.Checked) {
-                printPage.clearSelectedDays()
-              } else {
-                printPage.selectAllDays()
+            Controls.CheckBox {
+              text: LocaleText.tr("Show empty")
+              checked: printPage.showEmptyDays
+              padding: 0
+              onClicked: printPage.setShowEmptyDays(checked)
+            }
+
+            Controls.CheckBox {
+              text: LocaleText.tr("All")
+              enabled: printPage.hasSelectableDays()
+              padding: 0
+              tristate: true
+              checkState: printPage.allSelectionState()
+              onClicked: {
+                if (printPage.allSelectionState() === Qt.Checked) {
+                  printPage.clearSelectedDays()
+                } else {
+                  printPage.selectAllDays()
+                }
               }
             }
           }
 
-          Controls.ToolButton {
-            text: LocaleText.tr("Export")
-            icon.name: AppIcons.pick("export")
-            enabled: printPage.selectedDayCount() > 0
-            onClicked: exportMenu.popup()
+          RowLayout {
+            spacing: Kirigami.Units.smallSpacing
 
-            Controls.Menu {
-              id: exportMenu
+            Controls.ToolButton {
+              text: LocaleText.tr("More")
+              icon.name: AppIcons.pick("overflow")
+              enabled: printPage.selectedDayCount() > 0
+              onClicked: salesMoreMenu.popup()
 
-              Controls.MenuItem {
-                text: LocaleText.tr("Excel workbook") + " (*.xlsx)"
-                onTriggered: printPage.exportSelectedDays("xlsx")
+              Controls.Menu {
+                id: salesMoreMenu
+
+                Controls.MenuItem {
+                  text: LocaleText.tr("Summary")
+                  icon.name: AppIcons.pick("details")
+                  onTriggered: printPage.openSelectedSalesInfoDialog()
+                }
+
+                DangerMenuItem {
+                  text: LocaleText.tr("Reset day")
+                  icon.name: AppIcons.pick("reset")
+                  enabled: printPage.canResetSelectedDay()
+                  onTriggered: printPage.openResetSelectedDayDialog()
+                }
               }
+            }
 
-              Controls.MenuItem {
-                text: LocaleText.tr("OpenDocument spreadsheet") + " (*.ods)"
-                onTriggered: printPage.exportSelectedDays("ods")
+            Controls.Button {
+              text: LocaleText.tr("Export")
+              icon.name: AppIcons.pick("export")
+              enabled: printPage.selectedDayCount() > 0
+              onClicked: exportMenu.popup()
+
+              Controls.Menu {
+                id: exportMenu
+
+                Controls.MenuItem {
+                  text: LocaleText.tr("Excel workbook") + " (*.xlsx)"
+                  onTriggered: printPage.exportSelectedDays("xlsx")
+                }
+
+                Controls.MenuItem {
+                  text: LocaleText.tr("OpenDocument spreadsheet") + " (*.ods)"
+                  onTriggered: printPage.exportSelectedDays("ods")
+                }
               }
             }
           }
@@ -126,9 +151,8 @@ Item {
               ticketsText: TextFormat.ticketCount(monthGroup.modelData.ticketTotal)
               moneyText: MoneyFormat.format(
                 monthGroup.modelData.moneyTotal,
-                monthGroup.modelData.currency
+                monthGroup.modelData.currency || root.appState.main_currency || ""
               )
-              detailsTooltip: LocaleText.tr("Month details")
               selectionTristate: true
               selectionState: printPage.monthSelectionState(monthGroup.modelData.key)
               onSelectionToggled: printPage.setMonthSelected(
@@ -136,42 +160,47 @@ Item {
                 printPage.monthSelectionState(monthGroup.modelData.key) !== Qt.Checked
               )
               onDisclosureToggled: printPage.toggleMonthCollapsed(monthGroup.modelData.key)
-              onDetailsRequested: printPage.openMonthDetailDialog(monthGroup.modelData.key)
             }
 
-            ColumnLayout {
+            RowLayout {
               Layout.fillWidth: true
-              Layout.leftMargin: Kirigami.Units.gridUnit
               spacing: 0
               visible: !monthGroup.collapsed
 
-              Repeater {
-                model: monthGroup.modelData.days
+              Item {
+                Layout.preferredWidth: Kirigami.Units.gridUnit
+              }
 
-                delegate: SalesRow {
-                  id: dayRow
+              ColumnLayout {
+                Layout.fillWidth: true
+                spacing: 0
 
-                  required property var modelData
-                  readonly property bool hasSales: Number(modelData.ticket_count || 0) > 0
+                Repeater {
+                  model: monthGroup.modelData.days
 
-                  Layout.fillWidth: true
-                  title: TextFormat.dayDate(modelData.local_date)
-                  titleMuted: !dayRow.hasSales
-                  ticketsText: TextFormat.ticketCount(modelData.ticket_count)
-                  moneyText: MoneyFormat.format(modelData.total_minor, modelData.currency)
-                  detailsTooltip: LocaleText.tr("Day details")
-                  selectionEnabled: dayRow.hasSales
-                  selectionState: printPage.daySelected(modelData.local_date)
-                  ? Qt.Checked
-                  : Qt.Unchecked
-                  onSelectionToggled: printPage.setDaySelected(
-                    modelData.local_date,
-                    !printPage.daySelected(modelData.local_date)
-                  )
-                  onDetailsRequested: root.dayDetailDialogObject.openFor(
-                    printPage.ticketId,
-                    modelData
-                  )
+                  delegate: SalesRow {
+                    id: dayRow
+
+                    required property var modelData
+                    readonly property bool hasSales: Number(modelData.ticket_count || 0) > 0
+
+                    Layout.fillWidth: true
+                    title: TextFormat.dayDate(modelData.local_date)
+                    titleMuted: !dayRow.hasSales
+                    ticketsText: TextFormat.ticketCount(modelData.ticket_count)
+                    moneyText: MoneyFormat.format(
+                      modelData.total_minor,
+                      modelData.currency || root.appState.main_currency || ""
+                    )
+                    selectionEnabled: dayRow.hasSales
+                    selectionState: printPage.daySelected(modelData.local_date)
+                    ? Qt.Checked
+                    : Qt.Unchecked
+                    onSelectionToggled: printPage.setDaySelected(
+                      modelData.local_date,
+                      !printPage.daySelected(modelData.local_date)
+                    )
+                  }
                 }
               }
             }

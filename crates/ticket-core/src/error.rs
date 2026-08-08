@@ -14,6 +14,8 @@ pub enum TicketError {
     TicketNotFound,
     #[error("subticket was not found")]
     SubticketNotFound,
+    #[error("Add content in the editor before printing this ticket.")]
+    EmptyTicketDesign,
     #[error("the selected date must use YYYY-MM-DD format")]
     InvalidDate,
     #[error("quantity must be zero or greater")]

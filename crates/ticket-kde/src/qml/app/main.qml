@@ -25,6 +25,7 @@ Kirigami.ApplicationWindow {
   property alias backendObject: backend
   property alias addTicketDialogObject: dialogRegistry.addTicketDialogObject
   property alias settingsDialogObject: dialogRegistry.settingsDialogObject
+  property alias calibrationDialogObject: dialogRegistry.calibrationDialogObject
   property alias sudoFixDialogObject: dialogRegistry.sudoFixDialogObject
   property alias backupsDialogObject: dialogRegistry.backupsDialogObject
   property alias updateDialogObject: dialogRegistry.updateDialogObject
@@ -38,11 +39,10 @@ Kirigami.ApplicationWindow {
   property alias counterDialogObject: dialogRegistry.counterDialogObject
   property alias pricesDialogObject: dialogRegistry.pricesDialogObject
   property alias bulkCounterDialogObject: dialogRegistry.bulkCounterDialogObject
-  property alias dayDetailDialogObject: dialogRegistry.dayDetailDialogObject
-  property alias monthDetailDialogObject: dialogRegistry.monthDetailDialogObject
+  property alias salesInfoDialogObject: dialogRegistry.salesInfoDialogObject
   property alias dayExportDialogObject: dialogRegistry.dayExportDialogObject
   property alias printOperationDialogObject: dialogRegistry.printOperationDialogObject
-  property alias deleteDayDialogObject: dialogRegistry.deleteDayDialogObject
+  property alias resetDayDialogObject: dialogRegistry.resetDayDialogObject
   property alias revertLastDialogObject: dialogRegistry.revertLastDialogObject
   property alias errorDialogObject: dialogRegistry.errorDialogObject
   readonly property var backupSchedulerObject: backgroundTasks.backups
@@ -61,10 +61,11 @@ Kirigami.ApplicationWindow {
       tickets: [],
       printer_queues: [],
       selected_printer_queue: "",
-      development_mode: true,
+      development_mode: false,
       data_dir: "data",
       main_currency: "",
-      available_currencies: []
+      available_currencies: [],
+      ui_language: "en"
     }
   }
 
@@ -86,7 +87,7 @@ Kirigami.ApplicationWindow {
       root.errorDialogObject.open()
       return null
     }
-    if (successMessage) showPassiveNotification(successMessage)
+    if (successMessage) showPassiveNotification(successMessage, "short")
     return response.data
   }
 
@@ -161,13 +162,13 @@ Kirigami.ApplicationWindow {
   function ticketNextSummary(summary) {
     if (!summary || !summary.subtickets || summary.subtickets.length === 0) return ""
     const values = []
-    for (let index = 0; index < summary.subtickets.length && index < 3; ++index) {
+    for (let index = 0; index < summary.subtickets.length; ++index) {
       const subticket = summary.subtickets[index]
-      const label = MoneyFormat.format(subticket.amount_minor, subticket.currency)
+      const currency = root.appState.main_currency || subticket.currency || ""
+      const label = MoneyFormat.format(subticket.amount_minor, currency)
       const number = TextFormat.displayTicketNumber(subticket.next_number_today, summary.ticket.number_padding)
       values.push(label + " " + number)
     }
-    if (summary.subtickets.length > 3) values.push("...")
     return values.join(" | ")
   }
 
@@ -228,6 +229,7 @@ Kirigami.ApplicationWindow {
       } catch (error) {
         root.appState = defaultAppState()
       }
+      LocaleText.uiLanguage = root.appState.ui_language || "en"
       if (!root.appState.main_currency) {
         backend.ensureMainCurrency(Qt.locale().name)
       }

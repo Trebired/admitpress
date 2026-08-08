@@ -189,7 +189,7 @@ impl qobject::TicketBackend {
         QString::from(response.as_str())
     }
 
-    pub fn delete_day(
+    pub fn reset_day(
         mut self: Pin<&mut Self>,
         ticket_id: &QString,
         local_date: &QString,
@@ -206,7 +206,7 @@ impl qobject::TicketBackend {
         let response = match result {
             Ok(()) => {
                 self.as_mut().refresh();
-                success(json!({ "deleted": true }))
+                success(json!({ "reset": true }))
             }
             Err(error) => failure(error),
         };

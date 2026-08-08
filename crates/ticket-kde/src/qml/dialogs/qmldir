@@ -2,7 +2,7 @@ AddTicketDialog 1.0 add_ticket.qml
 DialogRegistry 1.0 registry.qml
 SettingsDialog 1.0 settings.qml
 SettingsPrinterDebug 1.0 printer_debug.qml
-SettingsCurrency 1.0 settings_currency.qml
+SettingsCurrency 1.0 settings/currency.qml
 BackupsDialog 1.0 backups.qml
 SudoFixDialog 1.0 sudo_fix.qml
 DeleteTicketDialog 1.0 delete/ticket.qml
@@ -15,11 +15,11 @@ UnsavedEditorDialog 1.0 unsaved_editor.qml
 CounterDialog 1.0 counter.qml
 PricesDialog 1.0 prices.qml
 BulkCounterDialog 1.0 bulk_counter.qml
-DayDetailDialog 1.0 day/detail.qml
-MonthDetailDialog 1.0 month_detail.qml
+SalesInfoDialog 1.0 sales_info.qml
 DayExportDialog 1.0 day/export.qml
 PrintOperationDialog 1.0 print/operation.qml
-DeleteDayDialog 1.0 delete/day.qml
+ResetDayDialog 1.0 reset_day.qml
 RevertLastDialog 1.0 revert_last.qml
 ErrorDialog 1.0 error.qml
 UpdateDialog 1.0 update.qml
+CalibrationDialog 1.0 calibration.qml

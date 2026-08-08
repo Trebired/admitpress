@@ -12,7 +12,9 @@ QtObject {
     if (!day || !day.subtickets || day.subtickets.length === 0) return LocaleText.tr("No sales")
     const parts = []
     for (let subticket of day.subtickets) {
-      parts.push(subticket.quantity + "x " + MoneyFormat.format(subticket.amount_minor, subticket.currency))
+      const currency = subticket.currency || root.appState.main_currency || ""
+      const label = MoneyFormat.format(subticket.amount_minor, currency)
+      parts.push(subticket.quantity + "x " + label)
     }
     return parts.join(" | ")
   }
@@ -65,7 +67,8 @@ QtObject {
         group.dayCount += 1
         group.ticketTotal += ticketCount
         group.moneyTotal += Number(day.total_minor || 0)
-        if (!group.currency && day.currency) group.currency = day.currency
+        const currency = day.currency || root.appState.main_currency || ""
+        if (!group.currency && currency) group.currency = currency
       }
     }
     return groups.filter(function(group) {
@@ -89,39 +92,6 @@ QtObject {
     return selectableDaySummaries().filter(function(day) {
         return monthKey(day.local_date) === monthKeyValue
     })
-  }
-
-  function monthGroup(monthKeyValue) {
-    for (let group of monthGroups()) {
-      if (group.key === monthKeyValue) return group
-    }
-    return null
-  }
-
-  function monthSubticketTotals(monthKeyValue) {
-    const totals = []
-    const index = {}
-    for (let day of monthDays(monthKeyValue)) {
-      for (let subticket of (day.subtickets || [])) {
-        let row = index[subticket.subticket_id]
-        if (!row) {
-          row = {
-            subticket_id: subticket.subticket_id,
-            name: subticket.name,
-            display_label: subticket.display_label,
-            amount_minor: subticket.amount_minor,
-            currency: subticket.currency,
-            quantity: 0,
-            total_minor: 0
-          }
-          index[subticket.subticket_id] = row
-          totals.push(row)
-        }
-        row.quantity += Number(subticket.quantity || 0)
-        row.total_minor += Number(subticket.total_minor || 0)
-      }
-    }
-    return totals
   }
 
   function monthSelectionState(monthKeyValue) {
@@ -228,12 +198,48 @@ QtObject {
     return ""
   }
 
-  function selectedDaySummaryText() {
-    const count = selectedDayCount()
-    if (count === 0) return LocaleText.tr("No days selected")
-    const tickets = TextFormat.ticketCount(selectedDayTicketCount())
-    const money = MoneyFormat.format(selectedDayTotalMinor(), selectedDayCurrency())
-    return TextFormat.dayCount(count) + ", " + tickets + ", " + money
+  function selectedDaySalesRows() {
+    page.selectedDayRevision
+    const rows = []
+    const index = {}
+    for (let day of selectableDaySummaries()) {
+      if (!page.selectedDayMap[day.local_date]) continue
+      for (let subticket of (day.subtickets || [])) {
+        const currency = subticket.currency || root.appState.main_currency || ""
+        const key = [
+          subticket.subticket_id || "",
+          subticket.amount_minor || 0,
+          currency
+        ].join(":")
+        let row = index[key]
+        if (!row) {
+          row = {
+            subticket_id: subticket.subticket_id,
+            name: subticket.name,
+            display_label: subticket.display_label,
+            amount_minor: subticket.amount_minor,
+            currency: currency,
+            quantity: 0,
+            total_minor: 0
+          }
+          index[key] = row
+          rows.push(row)
+        }
+        row.quantity += Number(subticket.quantity || 0)
+        row.total_minor += Number(subticket.total_minor || 0)
+      }
+    }
+    return rows
+  }
+
+  function selectedResetDay() {
+    const dates = selectedDayDates()
+    return dates.length === 1 ? dates[0] : ""
+  }
+
+  function canResetSelectedDay() {
+    const localDate = selectedResetDay()
+    return localDate !== "" && page.isDayLocked && !page.isDayLocked(localDate)
   }
 
   function cleanupSelectedDays() {

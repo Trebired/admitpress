@@ -1,4 +1,7 @@
-use crate::models::{DynamicKind, FieldKind, RenderContext, Subticket, Ticket, TicketField};
+use crate::models::{
+    DynamicKind, FieldKind, PageSize, PrintCalibration, RenderContext, Subticket, Ticket,
+    TicketField,
+};
 use anyhow::{Context, Result};
 use base64::{Engine as _, engine::general_purpose::STANDARD};
 use chrono::DateTime;
@@ -8,6 +11,7 @@ use std::path::Path;
 
 mod assets;
 mod border;
+mod calibration;
 mod text;
 
 #[cfg(test)]
@@ -15,6 +19,7 @@ mod tests;
 
 use assets::*;
 use border::*;
+pub use calibration::render_calibration_svg;
 pub(crate) use text::escape_xml as escape_xml_value;
 use text::*;
 
@@ -25,6 +30,16 @@ pub fn render_ticket_svg(
     fields: &[TicketField],
     subticket: &Subticket,
     context: &RenderContext,
+) -> Result<String> {
+    render_calibrated_ticket_svg(ticket, fields, subticket, context, PrintCalibration::none())
+}
+
+pub fn render_calibrated_ticket_svg(
+    ticket: &Ticket,
+    fields: &[TicketField],
+    subticket: &Subticket,
+    context: &RenderContext,
+    calibration: PrintCalibration,
 ) -> Result<String> {
     let background = ticket
     .background_svg_path
@@ -53,11 +68,13 @@ pub fn render_ticket_svg(
         <defs>{clip_paths}
         </defs>
         <rect x="0" y="0" width="{width}" height="{height}" fill="white"/>
+        <g id="print-calibration"{calibration_transform}>
         <g id="background">{background}</g>
         <g id="ticket-fields">"#,
         width = ticket.width_mm,
         height = ticket.height_mm,
         clip_paths = clip_paths,
+        calibration_transform = calibration_transform(calibration),
         background = background,
     );
 
@@ -80,43 +97,51 @@ pub fn render_ticket_svg(
         }
 
         let value = resolve_field_value(ticket, field, subticket, context);
-        let x = field.x_mm;
-        let font_size_mm = fitted_font_size_mm(field, &value);
-        let lines = text_lines(&value);
-        let y = text_baseline(field, font_size_mm, lines.len());
-        let anchor = match field.horizontal_alignment.as_str() {
-            "center" => "middle",
-            "right" => "end",
-            _ => "start",
-        };
-        let text_x = match field.horizontal_alignment.as_str() {
-            "center" => x + field.width_mm / 2.0,
-            "right" => x + field.width_mm,
-            _ => x,
-        };
-        let rendered_text = render_text_lines(&lines, text_x, font_size_mm);
+        let layout = layout_text(field, &value);
+        let rendered_text = render_text_lines(&layout);
         svg.push_str(&format!(
                 r#"
                 <g clip-path="url(#field-clip-{index})">
                 <text
-                x="{text_x}" y="{y}" text-anchor="{anchor}" font-family="{family}" font-size="{font_size_mm}" font-weight="{weight}"
+                x="{text_x}" y="{y}" text-anchor="{anchor}" font-family="{family}"
+                font-size="{font_size_mm}" font-weight="{weight}" font-style="{style}"
                 fill="black">{rendered_text}</text>
                 </g>"#,
                 index = index,
-                text_x = text_x,
-                y = y,
-                anchor = anchor,
+                text_x = layout.anchor_x_mm,
+                y = layout.first_baseline_mm,
+                anchor = layout.anchor,
                 family = escape_xml(&svg_font_family(&field.font_family)),
-                font_size_mm = font_size_mm,
+                font_size_mm = layout.font_size_mm,
                 weight = field.font_weight,
+                style = if field.font_italic {
+                    "italic"
+                } else {
+                    "normal"
+                },
                 rendered_text = rendered_text,
         ));
     }
 
     svg.push_str("\n</g>");
     svg.push_str(&render_ticket_border(ticket));
+    svg.push_str("\n</g>");
     svg.push_str("\n</svg>\n");
     Ok(svg)
+}
+
+fn calibration_transform(calibration: PrintCalibration) -> String {
+    let calibration = calibration.normalized();
+    if calibration.is_identity() {
+        return String::new();
+    }
+    format!(
+        r#" transform="translate({offset_x} {offset_y}) scale({scale_x} {scale_y})""#,
+        offset_x = calibration.offset_x_mm,
+        offset_y = calibration.offset_y_mm,
+        scale_x = calibration.scale_x(),
+        scale_y = calibration.scale_y(),
+    )
 }
 
 pub fn save_svg(path: &Path, svg: &str) -> Result<()> {

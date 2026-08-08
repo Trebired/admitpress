@@ -23,9 +23,10 @@ QtObject {
     const subtickets = page.summary && page.summary.subtickets ? page.summary.subtickets : []
     for (let subticket of subtickets) {
       if (subticket.id !== subticketId) continue
-      return subticket.display_label
-      || subticket.name
-      || MoneyFormat.format(subticket.amount_minor, subticket.currency)
+      return MoneyFormat.format(
+        subticket.amount_minor,
+        root.appState.main_currency || subticket.currency || ""
+      )
     }
     return ""
   }

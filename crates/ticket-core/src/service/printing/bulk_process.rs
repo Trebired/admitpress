@@ -39,7 +39,9 @@ impl TicketService {
             summary,
             &currency,
         );
-        let svg = match render_ticket_svg(ticket, fields, &subticket, &context) {
+        let calibration = self.ticket_calibration(ticket)?;
+        let svg = match render_calibrated_ticket_svg(ticket, fields, &subticket, &context, calibration)
+        {
             Ok(svg) => svg,
             Err(error) => return self.fail_bulk_records(&records, &started_at, &error.to_string()),
         };
@@ -113,7 +115,7 @@ impl TicketService {
     ) -> Result<Vec<PrintRecord>> {
         let pdf_output = svg_output.with_extension("pdf");
         let svg_output_text = svg_output.to_string_lossy().into_owned();
-        if let Err(error) = render_print_pdf(svg_output, &pdf_output, ticket) {
+        if let Err(error) = render_print_pdf(svg_output, &pdf_output, ticket.page_size()) {
             return self.fail_bulk_records_with_output(
                 records,
                 started_at,
@@ -122,7 +124,7 @@ impl TicketService {
             );
         }
         let output_text = pdf_output.to_string_lossy().into_owned();
-        match submit_cups_job(queue, ticket, &pdf_output) {
+        match submit_cups_job(queue, ticket.page_size(), &pdf_output) {
             Ok(job_id) => self.queue_bulk_records(records, started_at, &output_text, &job_id),
             Err(error) => self.fail_bulk_records_with_output(
                 records,

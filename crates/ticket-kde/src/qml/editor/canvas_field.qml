@@ -1,6 +1,4 @@
 import QtQuick
-import QtQuick.Controls as Controls
-import org.kde.kirigami as Kirigami
 
 Rectangle {
   id: fieldItem
@@ -16,6 +14,7 @@ Rectangle {
   required property string font_family
   required property real font_size_pt
   required property int font_weight
+  required property bool font_italic
   required property string horizontal_alignment
   required property string vertical_alignment
   required property string date_format
@@ -26,7 +25,6 @@ Rectangle {
   property var editor
   property var logic
   property var ticketCanvas
-  readonly property int innerGap: 3
   property bool selected: logic && logic.selection ? logic.selection.isSelected(index) : editor.selectedFieldIndex === index
   property bool primarySelected: editor.selectedFieldIndex === index
 
@@ -63,10 +61,7 @@ Rectangle {
   }
 
   Image {
-    x: fieldItem.innerGap
-    y: fieldItem.innerGap
-    width: parent.width - fieldItem.innerGap * 2
-    height: parent.height - fieldItem.innerGap * 2
+    anchors.fill: parent
     source: field_kind === "image" ? root.fileUrl(text) : ""
     fillMode: Image.PreserveAspectFit
     asynchronous: true
@@ -75,27 +70,43 @@ Rectangle {
     visible: field_kind === "image"
   }
 
-  Controls.Label {
-    x: fieldItem.innerGap
-    y: fieldItem.innerGap
-    width: parent.width - fieldItem.innerGap * 2
-    height: parent.height - fieldItem.innerGap * 2
-    visible: field_kind !== "image"
-    text: fieldItem.previewText()
-    textFormat: Text.PlainText
-    lineHeight: 1.18
-    color: "black"
-    font.family: fieldItem.font_family || "Noto Sans"
-    font.pixelSize: Math.max(5, logic.textMetrics.fittedFontSizeMm(fieldItem, fieldItem.previewText()) * editor.canvasScale)
-    font.weight: font_weight
-    horizontalAlignment: horizontal_alignment === "center"
-    ? Text.AlignHCenter
-    : horizontal_alignment === "right" ? Text.AlignRight : Text.AlignLeft
-    verticalAlignment: vertical_alignment === "top"
-    ? Text.AlignTop
-    : vertical_alignment === "bottom" ? Text.AlignBottom : Text.AlignVCenter
-    elide: Text.ElideNone
+  Item {
+    id: textBlock
+
+    anchors.fill: parent
+    visible: fieldItem.field_kind !== "image"
     clip: true
+
+    readonly property var layout: logic.textMetrics.layout(fieldItem, fieldItem.previewText())
+    readonly property real anchorX: (layout.anchorXMm - fieldItem.x_mm) * editor.canvasScale
+    readonly property real firstBaselineY: (layout.firstBaselineMm - fieldItem.y_mm) * editor.canvasScale
+    readonly property real lineAdvanceY: layout.lineAdvanceMm * editor.canvasScale
+
+    FontMetrics {
+      id: lineFont
+      font.family: fieldItem.font_family || "Noto Sans"
+      font.pixelSize: Math.max(1, textBlock.layout.fontSizeMm * editor.canvasScale)
+      font.weight: fieldItem.font_weight
+      font.italic: fieldItem.font_italic
+    }
+
+    Repeater {
+      model: textBlock.layout.lines
+
+      delegate: Text {
+        required property int index
+        required property string modelData
+
+        text: modelData
+        textFormat: Text.PlainText
+        font: lineFont.font
+        color: "black"
+        y: textBlock.firstBaselineY + index * textBlock.lineAdvanceY - baselineOffset
+        x: fieldItem.horizontal_alignment === "center"
+        ? textBlock.anchorX - width / 2
+        : fieldItem.horizontal_alignment === "right" ? textBlock.anchorX - width : textBlock.anchorX
+      }
+    }
   }
 
   MouseArea {

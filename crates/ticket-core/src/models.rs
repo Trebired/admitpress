@@ -3,11 +3,13 @@ use serde::{Deserialize, Serialize};
 mod backup;
 mod currency;
 mod print;
+mod printer;
 mod printer_activity;
 mod release;
 pub use backup::*;
 pub use currency::*;
 pub use print::*;
+pub use printer::*;
 pub use printer_activity::*;
 pub use release::*;
 
@@ -63,6 +65,7 @@ pub struct TicketField {
     pub font_family: String,
     pub font_size_pt: f64,
     pub font_weight: i64,
+    pub font_italic: bool,
     pub horizontal_alignment: String,
     pub vertical_alignment: String,
     pub date_format: String,
@@ -92,6 +95,8 @@ pub struct TicketFieldInput {
     pub font_size_pt: f64,
     #[serde(default = "default_font_weight")]
     pub font_weight: i64,
+    #[serde(default)]
+    pub font_italic: bool,
     #[serde(default = "default_horizontal_alignment")]
     pub horizontal_alignment: String,
     #[serde(default = "default_vertical_alignment")]
@@ -242,6 +247,7 @@ pub struct ApplicationState {
     pub data_dir: String,
     pub main_currency: String,
     pub available_currencies: Vec<CurrencyOption>,
+    pub ui_language: String,
 }
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct PrinterCommandReport {

@@ -1,6 +1,9 @@
 import { defineCodeDisciplineConfig } from "@trebired/code-discipline";
 
 export default defineCodeDisciplineConfig({
+  logging: {
+    warnings: false,
+  },
   ignore: {
     entries: [],
     use_gitignore: true,

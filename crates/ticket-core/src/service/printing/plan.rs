@@ -105,15 +105,16 @@ impl TicketService {
             for _ in 0..request.quantity {
                 subticket_ids.push(request.subticket_id.clone());
             }
+            let price_currency = self.current_price_currency(&subticket.currency);
             if currency.is_empty() {
-                currency = subticket.currency.clone();
+                currency = price_currency.clone();
             }
             count += request.quantity;
             total_minor += request.quantity * subticket.amount_minor;
             lines.push(format!(
                     "{}x {}",
                     request.quantity,
-                    format_money(subticket.amount_minor, &subticket.currency)
+                    format_money(subticket.amount_minor, &price_currency)
             ));
         }
         if !lines.is_empty() {

@@ -8,6 +8,7 @@ ColumnLayout {
   id: salesTable
 
   property var rows: []
+  property string fallbackCurrency: ""
   property color lineColor: Qt.rgba(
     Kirigami.Theme.textColor.r,
     Kirigami.Theme.textColor.g,
@@ -20,11 +21,11 @@ ColumnLayout {
   spacing: 0
 
   function amountText(row) {
-    return row ? MoneyFormat.format(row.amount_minor, row.currency) : ""
+    return row ? MoneyFormat.format(row.amount_minor, row.currency || fallbackCurrency) : ""
   }
 
   function totalText(row) {
-    return row ? MoneyFormat.format(row.total_minor, row.currency) : ""
+    return row ? MoneyFormat.format(row.total_minor, row.currency || fallbackCurrency) : ""
   }
 
   Item {

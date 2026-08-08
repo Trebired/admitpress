@@ -26,7 +26,10 @@ AppDialog {
     for (let subticket of ticketSummary.subtickets) {
       counterModel.append({
           subticket_id: subticket.id,
-          label: MoneyFormat.format(subticket.amount_minor, subticket.currency),
+          label: MoneyFormat.format(
+            subticket.amount_minor,
+            root.appState.main_currency || subticket.currency || ""
+          ),
           current_next: Number(subticket.next_number_today || 1),
           quantity: Number(subticket.next_number_today || 1)
       })

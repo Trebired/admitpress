@@ -1,7 +1,7 @@
 # Prices and Counters
 
-Prices live on the print page, not in the editor. Open a ticket with **Start
-printing**, then press **Edit prices**.
+Prices live on the print page, not in the editor. Open a ticket with **Print**,
+then press **Edit prices**.
 
 ## Prices
 

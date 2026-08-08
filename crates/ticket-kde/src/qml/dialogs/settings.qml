@@ -84,6 +84,22 @@ AppDialog {
     : LocaleText.tr("No CUPS queues detected. Add the PF8t in KDE System Settings first.")
   }
 
+  function languageChoices() {
+    return [
+      { code: "en", label: LocaleText.tr("English") },
+      { code: "cs", label: LocaleText.tr("Czech") }
+    ]
+  }
+
+  function languageChoiceIndex() {
+    const selected = root.appState.ui_language || "en"
+    const choices = settingsDialog.languageChoices()
+    const index = choices.findIndex(function(choice) {
+        return choice.code === selected
+    })
+    return index < 0 ? 0 : index
+  }
+
   function runPrinterFix(useAdmin) {
     root.runBackendBusy(useAdmin ? LocaleText.tr("Repairing printer as administrator") : LocaleText.tr("Fixing printer"), "fix_printer", function() {
         backend.fixPrinterAsync(useAdmin)
@@ -207,6 +223,27 @@ AppDialog {
           : LocaleText.tr("Physical printing is enabled. Print actions are sent to the selected CUPS queue.")
         }
 
+        Controls.Label {
+          Layout.fillWidth: true
+          text: LocaleText.tr("Language")
+        }
+        Controls.ComboBox {
+          id: languageCombo
+          Layout.fillWidth: true
+          model: settingsDialog.languageChoices()
+          textRole: "label"
+          valueRole: "code"
+          currentIndex: settingsDialog.languageChoiceIndex()
+          onActivated: function(index) {
+            root.acceptResponse(
+              backend.setUiLanguage(languageCombo.valueAt(index)),
+              LocaleText.tr("Language updated")
+            )
+          }
+        }
+
+        SectionBorder {}
+
         RowLayout {
           Layout.fillWidth: true
           Controls.Label {
@@ -238,6 +275,17 @@ AppDialog {
             }
           }
         }
+
+        SectionBorder {}
+
+        Controls.Button {
+          Layout.fillWidth: true
+          icon.name: AppIcons.pick("printer")
+          text: LocaleText.tr("Calibrate printer...")
+          onClicked: root.calibrationDialogObject.open()
+        }
+
+        SectionBorder {}
 
         Controls.Switch {
           Layout.fillWidth: true

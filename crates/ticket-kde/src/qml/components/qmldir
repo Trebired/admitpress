@@ -22,4 +22,5 @@ TicketNumberLabel 1.0 ticket/number/display.qml
 TicketNumberGrid 1.0 ticket/number/selector.qml
 singleton TextFormat 1.0 text_format.qml
 singleton MoneyFormat 1.0 money_format.qml
+singleton PrinterProfiles 1.0 printer_profiles.qml
 singleton FieldClipboard 1.0 field_clipboard.qml

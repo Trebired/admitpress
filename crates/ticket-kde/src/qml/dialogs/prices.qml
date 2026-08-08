@@ -22,16 +22,17 @@ AppDialog {
     ticketId = String(ticketIdValue || "")
     localDate = String(localDateValue || "")
     pricesModel.clear()
-    const mainCurrency = root.appState.main_currency || ""
     for (const subticket of (subtickets || [])) {
-      const row = Object.assign({}, subticket, { currency: subticket.currency || mainCurrency })
+      const row = Object.assign({}, subticket, { currency: "" })
       pricesModel.append(TextFormat.normalizeSubticketRow(row))
     }
     open()
   }
 
   function submit() {
-    const subticketsJson = JSON.stringify(TextFormat.serializeSubticketModel(pricesModel))
+    const subticketsJson = JSON.stringify(
+      TextFormat.serializeSubticketModel(pricesModel, root.appState.main_currency || "")
+    )
     const data = root.acceptResponse(
       backend.updateSubtickets(pricesDialog.ticketId, pricesDialog.localDate, subticketsJson),
       LocaleText.tr("Prices updated")
@@ -142,7 +143,7 @@ AppDialog {
       text: LocaleText.tr("Add price")
       icon.name: AppIcons.pick("add")
       onClicked: pricesModel.append(
-        TextFormat.normalizeSubticketRow({ currency: root.appState.main_currency || "" })
+        TextFormat.normalizeSubticketRow({ currency: "" })
       )
     }
 

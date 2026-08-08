@@ -40,12 +40,19 @@ impl TicketService {
         }
     }
 
+    pub(super) fn current_price_currency(&self, currency: &str) -> String {
+        if self.main_currency.is_empty() {
+            self.resolved_currency(currency)
+        } else {
+            self.main_currency.clone()
+        }
+    }
+
     pub(super) fn printed_currency(&self, sold: Option<&str>, priced: &str) -> String {
-        self.resolved_currency(
-            sold.map(str::trim)
-            .filter(|value| !value.is_empty())
-            .unwrap_or(priced),
-        )
+        match sold.map(str::trim).filter(|value| !value.is_empty()) {
+            Some(value) => self.resolved_currency(value),
+            None => self.current_price_currency(priced),
+        }
     }
 
     pub(super) fn effective_sale_currency(&self, sale_currency: Option<&str>) -> Option<String> {
@@ -135,8 +142,8 @@ impl TicketService {
         };
         let mut amounts = HashMap::with_capacity(subtickets.len());
         for subticket in subtickets {
-            let converted =
-            self.convert_amount(subticket.amount_minor, &subticket.currency, sale_currency)?;
+            let priced = self.current_price_currency(&subticket.currency);
+            let converted = self.convert_amount(subticket.amount_minor, &priced, sale_currency)?;
             amounts.insert(subticket.id.clone(), converted);
         }
         Ok(Some(amounts))

@@ -22,10 +22,10 @@ impl Storage {
                 r#"
                 INSERT INTO ticket_fields (
                 id, ticket_id, template_kind, field_kind, dynamic_kind, text, x_mm, y_mm,
-                width_mm, height_mm, font_family, font_size_pt, font_weight,
+                width_mm, height_mm, font_family, font_size_pt, font_weight, font_italic,
                 horizontal_alignment, vertical_alignment, date_format, prefix, suffix,
                 sort_order, recorded_at, updated_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 "#,
                 params![
                     id,
@@ -41,6 +41,7 @@ impl Storage {
                     input.font_family,
                     input.font_size_pt,
                     input.font_weight,
+                    input.font_italic,
                     input.horizontal_alignment,
                     input.vertical_alignment,
                     normalize_date_format(&input.date_format),
@@ -60,7 +61,7 @@ impl Storage {
     pub fn list_fields(&self, ticket_id: &str) -> Result<Vec<TicketField>> {
         let mut statement = self.connection.prepare(
             "SELECT id, ticket_id, template_kind, field_kind, dynamic_kind, text, x_mm, y_mm, width_mm, \
-            height_mm, font_family, font_size_pt, font_weight, horizontal_alignment, \
+            height_mm, font_family, font_size_pt, font_weight, font_italic, horizontal_alignment, \
             vertical_alignment, date_format, prefix, suffix, sort_order, recorded_at, updated_at \
             FROM ticket_fields WHERE ticket_id = ? ORDER BY template_kind, sort_order, recorded_at",
         )?;

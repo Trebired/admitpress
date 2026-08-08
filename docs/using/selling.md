@@ -1,6 +1,6 @@
 # Selling
 
-The print page is where sales happen. Open it with **Start printing**.
+The print page is where sales happen. Open it with **Print**.
 
 ![The print page](../screenshots/print.png)
 

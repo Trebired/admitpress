@@ -2,7 +2,7 @@ import QtQuick
 import QtQuick.Controls as Controls
 import QtQuick.Layouts
 import org.kde.kirigami as Kirigami
-import "../components"
+import "../../components"
 
 ColumnLayout {
   id: settingsCurrency
@@ -24,10 +24,17 @@ ColumnLayout {
     value: appRoot ? appRoot.appState.main_currency : ""
     placeholderLabel: LocaleText.tr("Choose a currency")
     onCurrencySelected: function(currency) {
-      appRoot.acceptResponse(
+      const data = appRoot.acceptResponse(
         backend.setMainCurrency(currency),
         LocaleText.tr("Main currency updated")
       )
+      if (!data) return
+      appRoot.appState = Object.assign({}, appRoot.appState, {
+          main_currency: data.main_currency || currency
+      })
+      const page = appRoot.pageStack.currentItem
+      if (page && page.load) page.load()
+      if (page && page.refreshSaleCurrencyDisplay) page.refreshSaleCurrencyDisplay()
     }
   }
 

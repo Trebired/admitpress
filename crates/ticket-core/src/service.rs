@@ -4,11 +4,14 @@ use crate::models::{
     CurrencyOption, DailyCounter, DynamicKind, FieldKind, ImportedImage,
     PrintHistoryEntry, PrintHistoryItem, PrintRecord, PrintResult, PrinterActivity,
     PrinterActivityJob, PrinterCommandReport, PrinterDiagnostics, PrinterFixResult, ReleaseStatus,
-    RenderContext,
+    PageSize, PrintCalibration, PrinterProfile, RenderContext,
     Subticket, SubticketCounterState, SubticketInput, SubticketSummary, Ticket, TicketField,
     TicketFieldInput, TicketSummary,
 };
-use crate::renderer::{format_money, format_number, render_ticket_svg, save_svg};
+use crate::renderer::{
+    format_money, format_number, render_calibrated_ticket_svg, render_calibration_svg,
+    render_ticket_svg, save_svg,
+};
 use crate::storage::{PrintReservation, Storage};
 use crate::templates::{normalize_template_kind, valid_template_kind};
 use anyhow::{Context, Result, anyhow};
@@ -97,4 +100,5 @@ pub struct TicketService {
     selected_printer_queue: Option<String>,
     cached_printer_queues: Vec<String>,
     main_currency: String,
+    ui_language: String,
 }

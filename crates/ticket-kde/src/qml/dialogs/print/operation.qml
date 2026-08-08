@@ -27,7 +27,7 @@ AppDialog {
   }
 
   function moneyText(amountMinor, currency) {
-    return MoneyFormat.format(amountMinor, currency || "")
+    return MoneyFormat.format(amountMinor, currency || root.appState.main_currency || "")
   }
 
   function ticketPadding() {
@@ -126,6 +126,7 @@ AppDialog {
 
         DaySalesTable {
           rows: operation && operation.items ? operation.items : []
+          fallbackCurrency: root.appState.main_currency || ""
           visible: rows.length > 0
         }
 
@@ -139,8 +140,9 @@ AppDialog {
 
             Controls.Label {
               Layout.fillWidth: true
-              text: modelData.display_label || modelData.name ||
-                printOperationDialog.moneyText(modelData.amount_minor, modelData.currency)
+              text: printOperationDialog.moneyText(modelData.amount_minor, modelData.currency)
+              || modelData.display_label
+              || modelData.name
             }
             Controls.Label {
               Layout.fillWidth: true

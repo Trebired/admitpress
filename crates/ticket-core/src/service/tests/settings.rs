@@ -21,13 +21,66 @@ fn selected_printer_queue_is_app_setting() {
 }
 
 #[test]
+fn ui_language_is_app_setting() {
+    let path = std::env::temp_dir().join(format!("ticket-service-test-{}", Uuid::new_v4()));
+    let mut service = TicketService::open_at(path.clone()).expect("service should open");
+
+    assert_eq!(service.ui_language(), "en");
+    service
+    .set_ui_language("cs_CZ")
+    .expect("language should save");
+    assert_eq!(service.ui_language(), "cs");
+
+    let mut reopened = TicketService::open_at(path).expect("service should reopen");
+    assert_eq!(reopened.ui_language(), "cs");
+    assert_eq!(
+        reopened
+        .application_state()
+        .expect("state should load")
+        .ui_language,
+        "cs"
+    );
+}
+
+#[test]
+fn ui_language_rejects_unsupported_languages() {
+    let path = std::env::temp_dir().join(format!("ticket-service-test-{}", Uuid::new_v4()));
+    let mut service = TicketService::open_at(path).expect("service should open");
+
+    assert!(service.set_ui_language("de").is_err());
+}
+
+#[test]
+fn development_mode_default_is_off_unless_dev_runner_requests_it() {
+    let production_path =
+    std::env::temp_dir().join(format!("ticket-service-test-{}", Uuid::new_v4()));
+    let production = TicketService::open_at_with_development_default(production_path, false)
+    .expect("service should open");
+    assert!(!production.development_mode());
+
+    let development_path =
+    std::env::temp_dir().join(format!("ticket-service-test-{}", Uuid::new_v4()));
+    let mut development =
+    TicketService::open_at_with_development_default(development_path.clone(), true)
+    .expect("service should open");
+    assert!(development.development_mode());
+
+    development
+    .set_development_mode(false)
+    .expect("development mode should save");
+    let reopened = TicketService::open_at_with_development_default(development_path, true)
+    .expect("service should reopen");
+    assert!(!reopened.development_mode());
+}
+
+#[test]
 fn cups_media_size_uses_ticket_dimensions() {
     let mut service = service();
     let ticket = service
     .create_ticket("Small label", 7.0, 5.0)
     .expect("ticket should be created");
 
-    assert_eq!(cups_media_size(&ticket), "Custom.70x50mm");
+    assert_eq!(cups_media_size(ticket.page_size()), "Custom.70x50mm");
 }
 
 #[test]
@@ -37,7 +90,7 @@ fn cups_job_options_center_exact_size_pdf_on_media() {
     .create_ticket("Small label", 7.0, 5.0)
     .expect("ticket should be created");
 
-    let options = cups_job_options(&ticket);
+    let options = cups_job_options(ticket.page_size());
 
     assert!(options.contains(&"media=Custom.70x50mm".to_owned()));
     assert!(options.contains(&"PageSize=Custom.70x50mm".to_owned()));
@@ -99,6 +152,7 @@ fn legacy_field(
         font_family: "Sans Serif".into(),
         font_size_pt: 12.0,
         font_weight: 400,
+        font_italic: false,
         horizontal_alignment: "left".into(),
         vertical_alignment: "center".into(),
         date_format: "date".into(),
@@ -135,7 +189,7 @@ fn print_pdf_uses_ticket_page_size() {
     )
     .expect("test SVG should write");
 
-    render_print_pdf(&svg_path, &pdf_path, &ticket).expect("print PDF should render");
+    render_print_pdf(&svg_path, &pdf_path, ticket.page_size()).expect("print PDF should render");
     let (width, height) = pdf_page_size_points(&pdf_path).expect("PDF page size should parse");
     assert!(
         (width - 70.0 / 25.4 * 72.0).abs() < 0.5,

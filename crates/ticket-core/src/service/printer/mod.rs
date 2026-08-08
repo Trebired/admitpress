@@ -1,5 +1,6 @@
 use super::*;
 
+mod calibration;
 mod commands;
 mod problems;
 mod queues;

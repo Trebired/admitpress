@@ -63,7 +63,7 @@ QtObject {
         Math.max(0, logic.ticketHeightMm() - field.height_mm)
       )
       copy.sort_order = fieldsModel.count
-      fieldsModel.append(copy)
+      fieldsModel.append(logic.normalizeFieldRow(copy))
       pasted.push(fieldsModel.count - 1)
     }
     if (pasted.length === 0) return false

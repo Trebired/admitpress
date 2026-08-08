@@ -234,6 +234,13 @@ pub(super) fn set_main_currency_response(service: &mut TicketService, currency: 
     }
 }
 
+pub(super) fn set_ui_language_response(service: &mut TicketService, language: &str) -> String {
+    match service.set_ui_language(language) {
+        Ok(()) => success(json!({ "ui_language": service.ui_language() })),
+        Err(error) => failure(error),
+    }
+}
+
 pub(super) fn cached_convert_amount_response(
     service: &TicketService,
     amount_minor: i64,

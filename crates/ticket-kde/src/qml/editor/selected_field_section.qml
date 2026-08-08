@@ -56,6 +56,26 @@ EditorPropertySection {
     return index < 0 ? 0 : index
   }
 
+  function isBold() {
+    const field = selectedField()
+    return !!field && Number(field.font_weight) >= 700
+  }
+
+  function isItalic() {
+    const field = selectedField()
+    return !!field && field.font_italic === true
+  }
+
+  function applyToSelection(name, value) {
+    if (!hasSelection()) return
+    const indices = logic && logic.selection
+    ? logic.selection.selectedIndices()
+    : [editor.selectedFieldIndex]
+    for (const index of indices) {
+      fieldsModel.setProperty(index, name, value)
+    }
+  }
+
   Controls.Label {
     Layout.fillWidth: true
     visible: !selectedSection.hasSelection()
@@ -158,21 +178,59 @@ EditorPropertySection {
       FontFamilyPicker {
         Layout.fillWidth: true
         value: selectedSection.hasSelection() ? selectedSection.selectedField().font_family : "Noto Sans"
-        onFamilySelected: family => fieldsModel.setProperty(editor.selectedFieldIndex, "font_family", family)
+        onFamilySelected: family => selectedSection.applyToSelection("font_family", family)
       }
     }
 
-    EditorFormField {
+    RowLayout {
+      Layout.fillWidth: true
       visible: logic ? logic.selectedFieldUsesText() : false
-      label: "Font size"
-      Controls.SpinBox {
-        Layout.fillWidth: true
-        from: 5
-        to: 200
-        value: selectedSection.hasSelection()
-        ? Math.round(selectedSection.selectedField().font_size_pt)
-        : 12
-        onValueModified: fieldsModel.setProperty(editor.selectedFieldIndex, "font_size_pt", value)
+      spacing: Kirigami.Units.smallSpacing
+
+      EditorFormField {
+        label: "Font size"
+        Controls.SpinBox {
+          Layout.fillWidth: true
+          from: 5
+          to: 200
+          value: selectedSection.hasSelection()
+          ? Math.round(selectedSection.selectedField().font_size_pt)
+          : 12
+          onValueModified: selectedSection.applyToSelection("font_size_pt", value)
+        }
+      }
+
+      EditorFormField {
+        label: "Style"
+        Layout.fillWidth: false
+
+        RowLayout {
+          spacing: 0
+
+          Controls.ToolButton {
+            icon.name: AppIcons.pick("bold")
+            text: LocaleText.tr("Bold")
+            display: Controls.AbstractButton.IconOnly
+            checkable: true
+            checked: selectedSection.isBold()
+            onToggled: selectedSection.applyToSelection("font_weight", checked ? 700 : 400)
+
+            Controls.ToolTip.visible: hovered
+            Controls.ToolTip.text: LocaleText.tr("Bold")
+          }
+
+          Controls.ToolButton {
+            icon.name: AppIcons.pick("italic")
+            text: LocaleText.tr("Italic")
+            display: Controls.AbstractButton.IconOnly
+            checkable: true
+            checked: selectedSection.isItalic()
+            onToggled: selectedSection.applyToSelection("font_italic", checked)
+
+            Controls.ToolTip.visible: hovered
+            Controls.ToolTip.text: LocaleText.tr("Italic")
+          }
+        }
       }
     }
 
@@ -189,7 +247,7 @@ EditorPropertySection {
           currentIndex: selectedSection.hasSelection()
           ? selectedSection.alignmentIndex(selectedSection.selectedField().horizontal_alignment, ["left", "center", "right"])
           : 0
-          onActivated: fieldsModel.setProperty(editor.selectedFieldIndex, "horizontal_alignment", currentText)
+          onActivated: selectedSection.applyToSelection("horizontal_alignment", currentText)
         }
       }
 
@@ -201,7 +259,7 @@ EditorPropertySection {
           currentIndex: selectedSection.hasSelection()
           ? selectedSection.alignmentIndex(selectedSection.selectedField().vertical_alignment, ["top", "center", "bottom"])
           : 0
-          onActivated: fieldsModel.setProperty(editor.selectedFieldIndex, "vertical_alignment", currentText)
+          onActivated: selectedSection.applyToSelection("vertical_alignment", currentText)
         }
       }
     }

@@ -73,13 +73,22 @@ impl qobject::TicketBackend {
         name: &QString,
         width_cm: f64,
         height_cm: f64,
+        printer_queue: &QString,
     ) -> QString {
+        let queue = printer_queue.to_string();
         let result = {
             let mut rust = self.as_mut().rust_mut();
             rust.service
             .as_mut()
             .ok_or_else(|| anyhow::anyhow!("application service is not initialized"))
-            .and_then(|service| service.create_ticket(&name.to_string(), width_cm, height_cm))
+            .and_then(|service| {
+                    service.create_ticket_for_printer(
+                        &name.to_string(),
+                        width_cm,
+                        height_cm,
+                        Some(queue.as_str()),
+                    )
+            })
         };
         let response = match result {
             Ok(ticket) => {
@@ -125,6 +134,21 @@ impl qobject::TicketBackend {
             }
             Err(error) => failure(error),
         };
+        QString::from(response.as_str())
+    }
+
+    pub fn set_ui_language(mut self: Pin<&mut Self>, language: &QString) -> QString {
+        let language = language.to_string();
+        let response = {
+            let mut rust = self.as_mut().rust_mut();
+            match rust.service.as_mut() {
+                Some(service) => set_ui_language_response(service, &language),
+                None => failure(anyhow::anyhow!("application service is not initialized")),
+            }
+        };
+        if response_is_ok(&response) {
+            self.as_mut().refresh();
+        }
         QString::from(response.as_str())
     }
 }

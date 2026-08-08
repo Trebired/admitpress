@@ -1,6 +1,7 @@
 use crate::models::{
     CounterAdjustment, DailyCounter, DaySalesSummary, DaySubticketSales, DynamicKind, FieldKind,
-    PrintRecord, Subticket, SubticketInput, Ticket, TicketField, TicketFieldInput,
+    PrintCalibration, PrintRecord, PrinterProfile, Subticket, SubticketInput, Ticket, TicketField,
+    TicketFieldInput,
 };
 use crate::templates::normalize_template_kind;
 use anyhow::{Context, Result};
@@ -17,6 +18,7 @@ mod counters;
 mod currency;
 mod fields;
 mod mapping;
+mod printers;
 mod records;
 mod schema;
 mod settings;

@@ -86,16 +86,18 @@ QtObject {
     }
   }
 
-  function serializeSubticketModel(model) {
+  function serializeSubticketModel(model, fallbackCurrency) {
     const values = []
     for (let index = 0; index < model.count; ++index) {
       const subticket = model.get(index)
-      const label = MoneyFormat.format(subticket.amount_minor, subticket.currency)
+      const currency = subticket.currency || ""
+      const labelCurrency = currency || fallbackCurrency || ""
+      const label = MoneyFormat.format(subticket.amount_minor, labelCurrency)
       values.push({
           id: subticket.id || "",
           name: label,
           amount_minor: Number(subticket.amount_minor || 0),
-          currency: subticket.currency || "",
+          currency: currency,
           display_label: label,
           keyboard_shortcut: subticket.keyboard_shortcut ? subticket.keyboard_shortcut : null,
           enabled: subticket.enabled === undefined ? true : subticket.enabled,

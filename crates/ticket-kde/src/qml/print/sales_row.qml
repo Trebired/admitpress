@@ -18,11 +18,9 @@ PrintListRow {
   property string leadingStat: ""
   property string ticketsText: ""
   property string moneyText: ""
-  property string detailsTooltip: ""
 
   signal selectionToggled
   signal disclosureToggled
-  signal detailsRequested
 
   hoverEnabled: salesRow.showDisclosure
   onClicked: if (salesRow.showDisclosure) salesRow.disclosureToggled()
@@ -80,14 +78,5 @@ PrintListRow {
     text: salesRow.moneyText
     horizontalAlignment: Text.AlignRight
     elide: Text.ElideRight
-  }
-
-  Controls.ToolButton {
-    Layout.preferredWidth: Kirigami.Units.gridUnit * 2
-    Layout.alignment: Qt.AlignVCenter
-    display: Controls.AbstractButton.IconOnly
-    icon.name: AppIcons.pick("details")
-    text: salesRow.detailsTooltip
-    onClicked: salesRow.detailsRequested()
   }
 }

@@ -8,4 +8,6 @@ if (typeof process.getuid === "function" && process.getuid() === 0) {
   process.exit(1);
 }
 
+process.env.TICKET_APP_DEVELOPMENT_MODE_DEFAULT ??= "true";
+
 runCargo(["run", "-p", "ticket-kde", "--bin", BINARY_NAME, "--", ...Bun.argv.slice(2)]);

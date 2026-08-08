@@ -7,6 +7,7 @@ Item {
   property var backend
   property alias addTicketDialogObject: addTicketDialog
   property alias settingsDialogObject: settingsDialog
+  property alias calibrationDialogObject: calibrationDialog
   property alias sudoFixDialogObject: sudoFixDialog
   property alias backupsDialogObject: backupsDialog
   property alias updateDialogObject: updateDialog
@@ -20,16 +21,16 @@ Item {
   property alias counterDialogObject: counterDialog
   property alias pricesDialogObject: pricesDialog
   property alias bulkCounterDialogObject: bulkCounterDialog
-  property alias dayDetailDialogObject: dayDetailDialog
-  property alias monthDetailDialogObject: monthDetailDialog
+  property alias salesInfoDialogObject: salesInfoDialog
   property alias dayExportDialogObject: dayExportDialog
   property alias printOperationDialogObject: printOperationDialog
-  property alias deleteDayDialogObject: deleteDayDialog
+  property alias resetDayDialogObject: resetDayDialog
   property alias revertLastDialogObject: revertLastDialog
   property alias errorDialogObject: errorDialog
 
   AddTicketDialog { id: addTicketDialog; root: dialogRegistry.root; backend: dialogRegistry.backend }
   SettingsDialog { id: settingsDialog; root: dialogRegistry.root; backend: dialogRegistry.backend }
+  CalibrationDialog { id: calibrationDialog; root: dialogRegistry.root; backend: dialogRegistry.backend }
   SudoFixDialog { id: sudoFixDialog; root: dialogRegistry.root; backend: dialogRegistry.backend }
   BackupsDialog { id: backupsDialog; root: dialogRegistry.root }
   UpdateDialog { id: updateDialog; root: dialogRegistry.root }
@@ -43,11 +44,10 @@ Item {
   CounterDialog { id: counterDialog; root: dialogRegistry.root; backend: dialogRegistry.backend }
   PricesDialog { id: pricesDialog; root: dialogRegistry.root; backend: dialogRegistry.backend }
   BulkCounterDialog { id: bulkCounterDialog; root: dialogRegistry.root; backend: dialogRegistry.backend }
-  DayDetailDialog { id: dayDetailDialog; root: dialogRegistry.root; backend: dialogRegistry.backend }
-  MonthDetailDialog { id: monthDetailDialog; root: dialogRegistry.root }
+  SalesInfoDialog { id: salesInfoDialog; root: dialogRegistry.root }
   DayExportDialog { id: dayExportDialog; root: dialogRegistry.root; backend: dialogRegistry.backend }
   PrintOperationDialog { id: printOperationDialog; root: dialogRegistry.root }
-  DeleteDayDialog { id: deleteDayDialog; root: dialogRegistry.root; backend: dialogRegistry.backend }
+  ResetDayDialog { id: resetDayDialog; root: dialogRegistry.root; backend: dialogRegistry.backend }
   RevertLastDialog { id: revertLastDialog; root: dialogRegistry.root }
   ErrorDialog { id: errorDialog; root: dialogRegistry.root }
 }

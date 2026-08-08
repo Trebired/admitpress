@@ -123,8 +123,7 @@ ColumnLayout {
           }
         }
 
-        Kirigami.PlaceholderMessage {
-          Layout.fillWidth: true
+        EmptyState {
           visible: fontList.count === 0
           text: LocaleText.tr("No fonts found")
         }

@@ -81,6 +81,7 @@ QtObject {
     props.numberPrefix = response.ticket.number_prefix
     props.numberSuffix = response.ticket.number_suffix
     editor.backgroundPath = response.ticket.background_svg_path || ""
+    editor.printerQueue = response.ticket.printer_queue || ""
     editor.borderStyle = response.ticket.border_style || "none"
     editor.borderWidthMm = Number(response.ticket.border_width_mm || 0.2)
     props.borderWidthValue = editor.borderWidthMm
@@ -89,6 +90,7 @@ QtObject {
     for (let field of response.fields) {
       const templateKind = field.template_kind === "bulk" ? "bulk" : "classic"
       field.template_kind = templateKind
+      normalizeFieldRow(field)
       if (templateKind === "bulk") {
         if (!isDeprecatedBulkTemplateField(field)) bulkFieldsModel.append(field)
       }
@@ -207,6 +209,19 @@ QtObject {
     return hasDynamicFieldInModel(fieldsModel, dynamicKind)
   }
 
+  function normalizeFieldRow(field) {
+    field.font_family = field.font_family || "Noto Sans"
+    field.font_size_pt = Number(field.font_size_pt) || 12
+    field.font_weight = Number(field.font_weight) || 400
+    field.font_italic = field.font_italic === true
+    field.horizontal_alignment = field.horizontal_alignment || "center"
+    field.vertical_alignment = field.vertical_alignment || "center"
+    field.date_format = field.date_format || "date"
+    field.prefix = field.prefix || ""
+    field.suffix = field.suffix || ""
+    return field
+  }
+
   function isDeprecatedBulkTemplateField(field) {
     if (!field || field.field_kind !== "dynamic") return false
     return field.dynamic_kind === "bulk_count" || field.dynamic_kind === "bulk_total"
@@ -239,7 +254,7 @@ QtObject {
         id: "", template_kind: editor.activeTicketType, field_kind: fieldKind,
         dynamic_kind: dynamicKind, text: text,
         x_mm: xMm, y_mm: yMm, width_mm: widthMm, height_mm: heightMm,
-        font_family: "Noto Sans", font_size_pt: 12, font_weight: 400,
+        font_family: "Noto Sans", font_size_pt: 12, font_weight: 400, font_italic: false,
         horizontal_alignment: "center", vertical_alignment: "center", date_format: "date",
         prefix: "", suffix: "", sort_order: fieldsModel.count
     })
@@ -272,22 +287,31 @@ QtObject {
   }
 
   function updateFieldGeometry(index, xMm, yMm, widthMm, heightMm, useSnap) {
-    if (index < 0 || index >= fieldsModel.count) return
+    updateFieldGeometryInModel(fieldsModel, index, xMm, yMm, widthMm, heightMm, useSnap)
+  }
+
+  function updateFieldGeometryInModel(model, index, xMm, yMm, widthMm, heightMm, useSnap) {
+    if (!model || index < 0 || index >= model.count) return
     const shouldSnap = useSnap === undefined ? true : useSnap
     const width = clamp(shouldSnap ? grid.snapXLengthMm(widthMm) : widthMm, 1, ticketWidthMm())
     const height = clamp(shouldSnap ? grid.snapYLengthMm(heightMm) : heightMm, 1, ticketHeightMm())
     const x = clamp(shouldSnap ? grid.snapXMm(xMm) : xMm, 0, Math.max(0, ticketWidthMm() - width))
     const y = clamp(shouldSnap ? grid.snapYMm(yMm) : yMm, 0, Math.max(0, ticketHeightMm() - height))
-    fieldsModel.setProperty(index, "x_mm", x)
-    fieldsModel.setProperty(index, "y_mm", y)
-    fieldsModel.setProperty(index, "width_mm", width)
-    fieldsModel.setProperty(index, "height_mm", height)
+    model.setProperty(index, "x_mm", x)
+    model.setProperty(index, "y_mm", y)
+    model.setProperty(index, "width_mm", width)
+    model.setProperty(index, "height_mm", height)
   }
 
   function normalizeFieldsToTicket() {
-    for (let index = 0; index < fieldsModel.count; ++index) {
-      const field = fieldsModel.get(index)
-      updateFieldGeometry(index, field.x_mm, field.y_mm, field.width_mm, field.height_mm)
+    normalizeFieldsModelToTicket(classicFieldsModel)
+    normalizeFieldsModelToTicket(bulkFieldsModel)
+  }
+
+  function normalizeFieldsModelToTicket(model) {
+    for (let index = 0; model && index < model.count; ++index) {
+      const field = model.get(index)
+      updateFieldGeometryInModel(model, index, field.x_mm, field.y_mm, field.width_mm, field.height_mm)
     }
   }
 

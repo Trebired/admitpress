@@ -84,6 +84,13 @@ AppDialog {
 
     DialogActions {
       Controls.Button {
+        text: LocaleText.tr("Open backups folder")
+        icon.name: AppIcons.pick("folderOpen")
+        enabled: backupsDialog.status && backupsDialog.status.directory
+        onClicked: Qt.openUrlExternally(root.fileUrl(backupsDialog.status.directory))
+      }
+
+      Controls.Button {
         text: LocaleText.tr("Back up now")
         icon.name: AppIcons.pick("backup")
         highlighted: true

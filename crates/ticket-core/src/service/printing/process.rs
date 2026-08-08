@@ -98,7 +98,9 @@ impl TicketService {
             }
             Some(queue)
         };
-        let svg = match render_ticket_svg(ticket, &fields, &subticket, &context) {
+        let calibration = self.ticket_calibration(ticket)?;
+        let svg = match render_calibrated_ticket_svg(ticket, &fields, &subticket, &context, calibration)
+        {
             Ok(svg) => svg,
             Err(error) => {
                 let ended_at = now_iso();
@@ -147,7 +149,7 @@ impl TicketService {
             .as_deref()
             .ok_or(TicketError::PrinterNotConfigured)?;
             let pdf_output = output_dir.join(format!("{output_stem}.pdf"));
-            if let Err(error) = render_print_pdf(&svg_output, &pdf_output, ticket) {
+            if let Err(error) = render_print_pdf(&svg_output, &pdf_output, ticket.page_size()) {
                 let ended_at = now_iso();
                 self.storage.update_print_record(
                     &record.id,
@@ -161,7 +163,7 @@ impl TicketService {
                 return Err(error);
             }
             let output_text = pdf_output.to_string_lossy().into_owned();
-            match submit_cups_job(queue, ticket, &pdf_output) {
+            match submit_cups_job(queue, ticket.page_size(), &pdf_output) {
                 Ok(job_id) => {
                     let ended_at = now_iso();
                     self.storage.update_print_record(

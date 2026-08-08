@@ -7,19 +7,26 @@ mod process;
 
 use plan::*;
 
-fn preview_path_component(value: &str) -> String {
-    let cleaned = value
-    .chars()
-    .map(|character| match character {
-            'A'..='Z' | 'a'..='z' | '0'..='9' | '-' | '_' => character,
-            _ => '-',
-    })
-    .collect::<String>();
-    let trimmed = cleaned.trim_matches('-');
-    if trimmed.is_empty() {
-        "preview".to_owned()
+fn ticket_has_background(ticket: &Ticket) -> bool {
+    ticket
+    .background_svg_path
+    .as_deref()
+    .map_or(false, |path| !path.trim().is_empty())
+}
+
+fn field_has_printable_content(field: &TicketField) -> bool {
+    match &field.field_kind {
+        FieldKind::Image => !field.text.trim().is_empty(),
+        FieldKind::Dynamic => field.dynamic_kind.is_some() || !field.text.trim().is_empty(),
+        FieldKind::Static => !field.text.trim().is_empty(),
+    }
+}
+
+fn ensure_ticket_has_printable_content(ticket: &Ticket, fields: &[TicketField]) -> Result<()> {
+    if ticket_has_background(ticket) || fields.iter().any(field_has_printable_content) {
+        Ok(())
     } else {
-        trimmed.to_owned()
+        Err(TicketError::EmptyTicketDesign.into())
     }
 }
 
@@ -45,6 +52,8 @@ impl TicketService {
         if subticket.ticket_id != ticket.id || !subticket.enabled {
             return Err(TicketError::SubticketNotFound.into());
         }
+        let fields = fields_for_template(self.storage.list_fields(ticket_id)?, "classic");
+        ensure_ticket_has_printable_content(&ticket, &fields)?;
         let sale_currency = self.effective_sale_currency(sale_currency);
         let sold_amounts_minor =
         self.sold_amounts_for(std::slice::from_ref(&subticket), sale_currency.as_deref())?;
@@ -107,8 +116,13 @@ impl TicketService {
         let bulk_fields = if options.single_ticket {
             let fields = fields_for_template(self.storage.list_fields(ticket_id)?, "bulk");
             require_bulk_ticket_fields(&fields)?;
+            ensure_ticket_has_printable_content(&ticket, &fields)?;
             fields
         } else {
+            if !options.count_only {
+                let fields = fields_for_template(self.storage.list_fields(ticket_id)?, "classic");
+                ensure_ticket_has_printable_content(&ticket, &fields)?;
+            }
             Vec::new()
         };
 

@@ -98,3 +98,19 @@ pub(super) fn path_to_file_url(path: &Path) -> String {
     }
     format!("file://{encoded}")
 }
+
+pub(super) fn preview_path_component(value: &str) -> String {
+    let cleaned = value
+    .chars()
+    .map(|character| match character {
+            'A'..='Z' | 'a'..='z' | '0'..='9' | '-' | '_' => character,
+            _ => '-',
+    })
+    .collect::<String>();
+    let trimmed = cleaned.trim_matches('-');
+    if trimmed.is_empty() {
+        "preview".to_owned()
+    } else {
+        trimmed.to_owned()
+    }
+}

@@ -18,6 +18,18 @@ EditorPropertySection {
   property alias dpiValue: dpiField.value
   property alias borderWidthValue: borderWidthField.realValue
 
+  readonly property bool usesPrinter: editor
+  ? String(editor.printerQueue || "").trim() !== ""
+  : false
+
+  function printerChoiceIndex() {
+    if (!root || !editor) return 0
+    const queue = String(editor.printerQueue || "")
+    if (queue.trim() === "") return 0
+    const index = root.printerChoices().indexOf(queue)
+    return index < 0 ? 0 : index
+  }
+
   function applyTicketSizeChange() {
     logic.normalizeFieldsToTicket()
     if (logic.canvas) logic.canvas.updateScale()
@@ -28,6 +40,28 @@ EditorPropertySection {
   EditorFormField {
     label: "Name"
     Controls.TextField { id: nameField; Layout.fillWidth: true }
+  }
+
+  EditorFormField {
+    label: "Printer"
+    Controls.ComboBox {
+      id: printerField
+      Layout.fillWidth: true
+      model: root ? root.printerChoices() : []
+      currentIndex: ticketSection.printerChoiceIndex()
+      onActivated: function(index) {
+        editor.printerQueue = index <= 0 ? "" : printerField.textAt(index)
+      }
+    }
+  }
+
+  Controls.Label {
+    Layout.fillWidth: true
+    wrapMode: Text.WordWrap
+    color: Kirigami.Theme.disabledTextColor
+    text: ticketSection.usesPrinter
+    ? LocaleText.tr("Resizing here also resizes this printer's paper for every ticket that uses it.")
+    : LocaleText.tr("This ticket keeps its own size. Assign a printer to use its calibrated paper.")
   }
 
   Controls.ButtonGroup { id: editorOrientationGroup }

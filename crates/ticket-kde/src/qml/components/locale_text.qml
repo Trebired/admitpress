@@ -6,7 +6,8 @@ QtObject {
   id: localeText
 
   property var backend: null
-  readonly property string localeName: Qt.locale().name
+  property string uiLanguage: "en"
+  readonly property string localeName: uiLanguage || "en"
   readonly property string language: localeName.toLowerCase().replace("-", "_").split("_")[0]
   readonly property bool isCzech: language === "cs"
   readonly property var monthKeys: [

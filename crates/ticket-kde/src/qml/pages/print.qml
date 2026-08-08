@@ -25,6 +25,8 @@ Kirigami.Page {
   property int activeQuantityIndex: 0
   property int activePrintTabIndex: 0
   property string saleCurrency: ""
+  property string observedMainCurrency: root.appState.main_currency || ""
+  property string lastObservedMainCurrency: observedMainCurrency
   property string activityFilter: ""
   property string activitySearch: ""
 
@@ -35,7 +37,11 @@ Kirigami.Page {
       interactiveResizeEnabled: true
   })
 
-  title: summary ? "Print " + summary.ticket.name : "Printing"
+  title: summary ? LocaleText.tr("Print ") + summary.ticket.name : LocaleText.tr("Printing")
+  onObservedMainCurrencyChanged: {
+    handleMainCurrencyChanged(lastObservedMainCurrency, observedMainCurrency)
+    lastObservedMainCurrency = observedMainCurrency
+  }
 
   PrintLogic {
     id: logic
@@ -118,6 +124,28 @@ Kirigami.Page {
     return logic.canSubmitSelection(singleTicket)
   }
 
+  function fieldHasPrintableContent(field) {
+    if (!field) return false
+    const text = String(field.text || "").trim()
+    if (field.field_kind === "image") return text.length > 0
+    if (field.field_kind === "dynamic") return !!field.dynamic_kind || text.length > 0
+    return text.length > 0
+  }
+
+  function hasPrintableContent(singleTicket) {
+    const ticket = summary && summary.ticket
+    if (!ticket) return false
+    if (String(ticket.background_svg_path || "").trim().length > 0) return true
+    const templateKind = singleTicket ? "bulk" : "classic"
+    const fields = summary.fields || []
+    for (let index = 0; index < fields.length; ++index) {
+      const field = fields[index]
+      const fieldTemplateKind = field && field.template_kind === "bulk" ? "bulk" : "classic"
+      if (fieldTemplateKind === templateKind && fieldHasPrintableContent(field)) return true
+    }
+    return false
+  }
+
   function canNameSale() {
     return logic.canNameSale()
   }
@@ -139,6 +167,13 @@ Kirigami.Page {
   }
 
   function refreshSaleCurrencyDisplay() {
+    logic.syncQuantityModel()
+  }
+
+  function handleMainCurrencyChanged(previousCurrency, currentCurrency) {
+    if (saleCurrency === previousCurrency || saleCurrency === currentCurrency) {
+      saleCurrency = ""
+    }
     logic.syncQuantityModel()
   }
 
@@ -183,8 +218,8 @@ Kirigami.Page {
     return logic.days.selectedDayCount()
   }
 
-  function selectedDaySummaryText() {
-    return logic.days.selectedDaySummaryText()
+  function selectedDaySalesRows() {
+    return logic.days.selectedDaySalesRows()
   }
 
   function visibleDaySummaries() {
@@ -215,12 +250,13 @@ Kirigami.Page {
     return logic.days.hasSelectableDays()
   }
 
-  function openMonthDetailDialog(monthKeyValue) {
-    root.monthDetailDialogObject.openFor(
-      monthKeyValue,
-      logic.days.monthLabel(monthKeyValue),
-      logic.days.monthGroup(monthKeyValue),
-      logic.days.monthSubticketTotals(monthKeyValue)
+  function openSelectedSalesInfoDialog() {
+    if (selectedDayCount() === 0) return
+    root.salesInfoDialogObject.openFor(
+      logic.days.selectedDayTicketCount(),
+      logic.days.selectedDayTotalMinor(),
+      logic.days.selectedDayCurrency(),
+      logic.days.selectedDaySalesRows()
     )
   }
 
@@ -242,6 +278,15 @@ Kirigami.Page {
 
   function selectedDayDates() {
     return logic.days.selectedDayDates()
+  }
+
+  function canResetSelectedDay() {
+    return logic.days.canResetSelectedDay()
+  }
+
+  function openResetSelectedDayDialog() {
+    if (!canResetSelectedDay()) return
+    root.resetDayDialogObject.openFor(ticketId, logic.days.selectedResetDay())
   }
 
   function setShowEmptyDays(value) {

@@ -1,13 +1,13 @@
 use super::*;
 
-pub(super) fn render_print_pdf(svg_path: &Path, pdf_path: &Path, ticket: &Ticket) -> Result<()> {
+pub(super) fn render_print_pdf(svg_path: &Path, pdf_path: &Path, page: PageSize) -> Result<()> {
     if let Some(parent) = pdf_path.parent() {
         fs::create_dir_all(parent)?;
     }
 
     let mut failures = Vec::new();
-    let width = mm_length(ticket.width_mm);
-    let height = mm_length(ticket.height_mm);
+    let width = mm_length(page.width_mm);
+    let height = mm_length(page.height_mm);
     let rsvg_result = Command::new("rsvg-convert")
     .arg("--format")
     .arg("pdf")
@@ -127,10 +127,10 @@ pub(super) fn command_failure(command: &str, output: &std::process::Output) -> S
     format!("{command}: {detail}")
 }
 
-pub(super) fn submit_cups_job(queue: &str, ticket: &Ticket, output_path: &Path) -> Result<String> {
+pub(super) fn submit_cups_job(queue: &str, page: PageSize, output_path: &Path) -> Result<String> {
     let mut command = Command::new("lp");
     command.arg("-d").arg(queue);
-    for option in cups_job_options(ticket) {
+    for option in cups_job_options(page) {
         command.arg("-o").arg(option);
     }
     let output = command
@@ -154,8 +154,8 @@ pub(super) fn submit_cups_job(queue: &str, ticket: &Ticket, output_path: &Path) 
     Ok(job_id)
 }
 
-pub(super) fn cups_job_options(ticket: &Ticket) -> Vec<String> {
-    let media = cups_media_size(ticket);
+pub(super) fn cups_job_options(page: PageSize) -> Vec<String> {
+    let media = cups_media_size(page);
     vec![
         format!("media={media}"),
         format!("PageSize={media}"),
@@ -166,11 +166,11 @@ pub(super) fn cups_job_options(ticket: &Ticket) -> Vec<String> {
     ]
 }
 
-pub(super) fn cups_media_size(ticket: &Ticket) -> String {
+pub(super) fn cups_media_size(page: PageSize) -> String {
     format!(
         "Custom.{}x{}mm",
-        format_mm_value(ticket.width_mm),
-        format_mm_value(ticket.height_mm)
+        format_mm_value(page.width_mm),
+        format_mm_value(page.height_mm)
     )
 }
 

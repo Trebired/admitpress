@@ -122,18 +122,18 @@ _version: 2
 "Date":
   en: "Date"
   cs: "Datum"
-"Day deleted":
-  en: "Day deleted"
-  cs: "Den smazán"
+"Day reset":
+  en: "Day reset"
+  cs: "Den resetován"
 "Days":
   en: "Days"
   cs: "Dny"
 "Delete":
   en: "Delete"
   cs: "Smazat"
-"Delete day":
-  en: "Delete day"
-  cs: "Smazat den"
+"Reset day":
+  en: "Reset day"
+  cs: "Resetovat den"
 "Delete ticket":
   en: "Delete ticket"
   cs: "Smazat vstupenku"
@@ -145,7 +145,7 @@ _version: 2
   cs: "Upravit"
 "Export":
   en: "Export"
-  cs: "Export"
+  cs: "Exportovat"
 "Export ticket":
   en: "Export ticket"
   cs: "Exportovat vstupenku"
@@ -163,16 +163,13 @@ _version: 2
   cs: "Vodorovně"
 "Import":
   en: "Import"
-  cs: "Import"
+  cs: "Importovat"
 "Import ticket archive":
   en: "Import ticket archive"
   cs: "Importovat archiv vstupenky"
 "Main menu":
   en: "Main menu"
   cs: "Hlavní menu"
-"No days selected":
-  en: "No days selected"
-  cs: "Nejsou vybrané žádné dny"
 "No fonts found":
   en: "No fonts found"
   cs: "Nebyla nalezena žádná písma"
@@ -233,18 +230,15 @@ _version: 2
 "Sales":
   en: "Sales"
   cs: "Prodeje"
+"Sales summary":
+  en: "Sales summary"
+  cs: "Souhrn prodejů"
 "Save":
   en: "Save"
   cs: "Uložit"
 "Save and leave":
   en: "Save and leave"
   cs: "Uložit a odejít"
-"Day details":
-  en: "Day details"
-  cs: "Detaily dne"
-"Month details":
-  en: "Month details"
-  cs: "Detaily měsíce"
 "Search currencies":
   en: "Search currencies"
   cs: "Hledat měny"
@@ -293,9 +287,18 @@ _version: 2
 "Settings":
   en: "Settings"
   cs: "Nastavení"
-"Start printing":
-  en: "Start printing"
-  cs: "Začít tisknout"
+"Language":
+  en: "Language"
+  cs: "Jazyk"
+"English":
+  en: "English"
+  cs: "Angličtina"
+"Czech":
+  en: "Czech"
+  cs: "Čeština"
+"Language updated":
+  en: "Language updated"
+  cs: "Jazyk aktualizován"
 "Ticket":
   en: "Ticket"
   cs: "Vstupenka"
@@ -317,6 +320,9 @@ _version: 2
 "Width, cm":
   en: "Width, cm"
   cs: "Šířka, cm"
+"Bold":
+  en: "Bold"
+  cs: "Tučné"
 "Border":
   en: "Border"
   cs: "Okraj"
@@ -332,6 +338,9 @@ _version: 2
 "Image":
   en: "Image"
   cs: "Obrázek"
+"Italic":
+  en: "Italic"
+  cs: "Kurzíva"
 "Line, mm":
   en: "Line, mm"
   cs: "Čára, mm"
@@ -371,6 +380,9 @@ _version: 2
 "Static text":
   en: "Static text"
   cs: "Statický text"
+"Style":
+  en: "Style"
+  cs: "Řez"
 "Dynamic ":
   en: "Dynamic "
   cs: "Dynamické "
@@ -398,6 +410,9 @@ _version: 2
 "Suffix":
   en: "Suffix"
   cs: "Přípona"
+"Summary":
+  en: "Summary"
+  cs: "Souhrn"
 "Text":
   en: "Text"
   cs: "Text"
@@ -410,15 +425,18 @@ _version: 2
 "/development-prints and do not send paper to a printer.":
   en: "/development-prints and do not send paper to a printer."
   cs: "/development-prints a neposílají papír do tiskárny."
-"Create a ticket, position dynamic fields, add prices, and start printing.":
-  en: "Create a ticket, position dynamic fields, add prices, and start printing."
-  cs: "Vytvořte vstupenku, umístěte dynamická pole, přidejte ceny a začněte tisknout."
+"Create a ticket, position dynamic fields, add prices, and print.":
+  en: "Create a ticket, position dynamic fields, add prices, and print."
+  cs: "Vytvořte vstupenku, umístěte dynamická pole, přidejte ceny a tiskněte."
 "prices":
   en: "prices"
   cs: "cen"
 "Next today: ":
   en: "Next today: "
   cs: "Další dnes: "
+"Next":
+  en: "Next"
+  cs: "Další"
 "Printer: ":
   en: "Printer: "
   cs: "Tiskárna: "
@@ -500,15 +518,18 @@ _version: 2
 "Select at least two tickets for a group ticket.":
   en: "Select at least two tickets for a group ticket."
   cs: "Pro skupinovou vstupenku vyberte alespoň dvě vstupenky."
-"Delete ":
-  en: "Delete "
-  cs: "Smazat "
+"Add content in the editor before printing this ticket.":
+  en: "Add content in the editor before printing this ticket."
+  cs: "Před tiskem přidejte vstupence obsah v editoru."
+"Reset ":
+  en: "Reset "
+  cs: "Resetovat "
 " for this ticket?":
   en: " for this ticket?"
   cs: " pro tuto vstupenku?"
-"This removes that date's print records and per-price counters.":
-  en: "This removes that date's print records and per-price counters."
-  cs: "Odstraní tiskové záznamy a počítadla cen pro toto datum."
+"This clears that date's print records and per-price counters.":
+  en: "This clears that date's print records and per-price counters."
+  cs: "Vymaže tiskové záznamy a počítadla cen pro toto datum."
 "Delete ticket prompt prefix":
   en: "Delete \""
   cs: "Smazat \""
@@ -547,6 +568,12 @@ _version: 2
   cs: "Číslo"
 "Print":
   en: "Print"
+  cs: "Tisk"
+"Print ":
+  en: "Print "
+  cs: "Tisknout "
+"Printing":
+  en: "Printing"
   cs: "Tisk"
 "Properties":
   en: "Properties"
@@ -644,6 +671,9 @@ _version: 2
 "Fixing printer":
   en: "Fixing printer"
   cs: "Opravuji tiskárnu"
+"Fix":
+  en: "Fix"
+  cs: "Opravit"
 "Printer diagnostics have not been loaded yet.":
   en: "Printer diagnostics have not been loaded yet."
   cs: "Diagnostika tiskárny zatím nebyla načtena."
@@ -779,12 +809,12 @@ _version: 2
 "The repair runs as one elevated batch, so your desktop asks for the administrator password once when it starts.":
   en: "The repair runs as one elevated batch, so your desktop asks for the administrator password once when it starts."
   cs: "Oprava probíhá jako jedna dávka se zvýšenými právy, takže si prostředí vyžádá heslo správce jednou na začátku."
-"Repair printer":
-  en: "Repair printer"
-  cs: "Opravit tiskárnu"
 "Repair as administrator":
   en: "Repair as administrator"
   cs: "Opravit jako správce"
+"Repair":
+  en: "Repair"
+  cs: "Opravit"
 "Repairing printer as administrator":
   en: "Repairing printer as administrator"
   cs: "Opravuji tiskárnu jako správce"
@@ -800,6 +830,9 @@ _version: 2
 "Back up now":
   en: "Back up now"
   cs: "Zálohovat nyní"
+"Open backups folder":
+  en: "Open backups folder"
+  cs: "Otevřít složku záloh"
 "Backup created":
   en: "Backup created"
   cs: "Záloha vytvořena"
@@ -854,4 +887,75 @@ _version: 2
 "Open the release page":
   en: "Open the release page"
   cs: "Otevřít stránku vydání"
-
+"Calibrate a printer in Settings first, or set the size by hand below.":
+  en: "Calibrate a printer in Settings first, or set the size by hand below."
+  cs: "Nejdřív zkalibrujte tiskárnu v Nastavení, nebo zadejte rozměr ručně níže."
+"Calibration sheet sent":
+  en: "Calibration sheet sent"
+  cs: "Kalibrační list odeslán"
+"Measure the printed bars. If one came out short, raise its scale.":
+  en: "Measure the printed bars. If one came out short, raise its scale."
+  cs: "Změřte vytištěné úsečky. Pokud vyšla kratší, zvyšte její měřítko."
+"Offset down, mm":
+  en: "Offset down, mm"
+  cs: "Posun dolů, mm"
+"Offset right, mm":
+  en: "Offset right, mm"
+  cs: "Posun doprava, mm"
+"Paper height, cm":
+  en: "Paper height, cm"
+  cs: "Výška papíru, cm"
+"Paper width, cm":
+  en: "Paper width, cm"
+  cs: "Šířka papíru, cm"
+"Print calibration sheet":
+  en: "Print calibration sheet"
+  cs: "Vytisknout kalibrační list"
+"Printer calibration":
+  en: "Printer calibration"
+  cs: "Kalibrace tiskárny"
+"Printer calibration reset":
+  en: "Printer calibration reset"
+  cs: "Kalibrace tiskárny obnovena"
+"Printer calibration saved":
+  en: "Printer calibration saved"
+  cs: "Kalibrace tiskárny uložena"
+"Printer page size updated":
+  en: "Printer page size updated"
+  cs: "Velikost papíru tiskárny upravena"
+"Reset calibration":
+  en: "Reset calibration"
+  cs: "Obnovit kalibraci"
+"Resizing here also resizes this printer's paper for every ticket that uses it.":
+  en: "Resizing here also resizes this printer's paper for every ticket that uses it."
+  cs: "Změna rozměru zde změní papír této tiskárny pro všechny vstupenky, které ji používají."
+"Scale across, %":
+  en: "Scale across, %"
+  cs: "Měřítko na šířku, %"
+"Scale down, %":
+  en: "Scale down, %"
+  cs: "Měřítko na výšku, %"
+"The ticket takes the size calibrated for this printer.":
+  en: "The ticket takes the size calibrated for this printer."
+  cs: "Vstupenka převezme rozměr zkalibrovaný pro tuto tiskárnu."
+"This ticket keeps its own size. Assign a printer to use its calibrated paper.":
+  en: "This ticket keeps its own size. Assign a printer to use its calibrated paper."
+  cs: "Tato vstupenka si drží vlastní rozměr. Přiřaďte tiskárnu pro její zkalibrovaný papír."
+"Calibrate printer...":
+  en: "Calibrate printer..."
+  cs: "Kalibrovat tiskárnu..."
+"Print the sheet, measure it, and enter what came out.":
+  en: "Print the sheet, measure it, and enter what came out."
+  cs: "Vytiskněte list, změřte ho a zadejte, co skutečně vyšlo."
+"No printer queues detected.":
+  en: "No printer queues detected."
+  cs: "Nebyla nalezena žádná tisková fronta."
+"Printing...":
+  en: "Printing..."
+  cs: "Tisknu..."
+"Printing calibration sheet":
+  en: "Printing calibration sheet"
+  cs: "Tisknu kalibrační list"
+"Reset calibration fields":
+  en: "Reset calibration fields"
+  cs: "Obnovit kalibrační pole"

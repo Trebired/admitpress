@@ -3,7 +3,10 @@ use cxx_qt::{CxxQtThread, CxxQtType, Threading};
 use cxx_qt_lib::QString;
 use serde_json::{Value, json};
 use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
-use ticket_core::{BulkPrintOptions, BulkRequest, SubticketInput, TicketFieldInput, TicketService};
+use ticket_core::{
+    BulkPrintOptions, BulkRequest, PageSize, PrintCalibration, SubticketInput, TicketFieldInput,
+    TicketService,
+};
 
 static ASYNC_RESPONSE_ID: AtomicU64 = AtomicU64::new(1);
 static PRINTER_FIX_GENERATION: AtomicU64 = AtomicU64::new(1);
@@ -54,6 +57,7 @@ pub mod qobject {
             name: &QString,
             width_cm: f64,
             height_cm: f64,
+            printer_queue: &QString,
         ) -> QString;
 
         #[qinvokable]
@@ -222,7 +226,7 @@ pub mod qobject {
         ) -> QString;
 
         #[qinvokable]
-        fn delete_day(self: Pin<&mut Self>, ticket_id: &QString, local_date: &QString) -> QString;
+        fn reset_day(self: Pin<&mut Self>, ticket_id: &QString, local_date: &QString) -> QString;
 
         #[qinvokable]
         fn set_development_mode(self: Pin<&mut Self>, enabled: bool) -> QString;
@@ -249,7 +253,45 @@ pub mod qobject {
         fn cancel_printer_fix(self: Pin<&mut Self>) -> QString;
 
         #[qinvokable]
+        fn printer_profiles(self: Pin<&mut Self>) -> QString;
+
+        #[qinvokable]
+        fn set_printer_page_size(
+            self: Pin<&mut Self>,
+            printer_queue: &QString,
+            width_cm: f64,
+            height_cm: f64,
+        ) -> QString;
+
+        #[qinvokable]
+        fn set_printer_calibration(
+            self: Pin<&mut Self>,
+            printer_queue: &QString,
+            offset_x_mm: f64,
+            offset_y_mm: f64,
+            scale_x_percent: f64,
+            scale_y_percent: f64,
+        ) -> QString;
+
+        #[qinvokable]
+        fn print_calibration_sheet(
+            self: Pin<&mut Self>,
+            printer_queue: &QString,
+            calibration_json: &QString,
+        ) -> QString;
+
+        #[qinvokable]
+        fn print_calibration_sheet_async(
+            self: Pin<&mut Self>,
+            printer_queue: &QString,
+            calibration_json: &QString,
+        );
+
+        #[qinvokable]
         fn set_data_directory(self: Pin<&mut Self>, source_path: &QString) -> QString;
+
+        #[qinvokable]
+        fn set_ui_language(self: Pin<&mut Self>, language: &QString) -> QString;
 
         #[qinvokable]
         fn ensure_main_currency(self: Pin<&mut Self>, locale: &QString) -> QString;
@@ -301,6 +343,7 @@ pub mod qobject {
 }
 
 mod backup;
+mod calibration;
 mod currency;
 mod helpers;
 mod lifecycle;

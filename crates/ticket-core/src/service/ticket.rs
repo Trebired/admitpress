@@ -58,19 +58,46 @@ impl TicketService {
     }
 
     pub fn create_ticket(&mut self, name: &str, width_cm: f64, height_cm: f64) -> Result<Ticket> {
+        self.create_ticket_for_printer(name, width_cm, height_cm, None)
+    }
+
+    pub fn create_ticket_for_printer(
+        &mut self,
+        name: &str,
+        width_cm: f64,
+        height_cm: f64,
+        printer_queue: Option<&str>,
+    ) -> Result<Ticket> {
         let name = name.trim();
         if name.is_empty() {
             return Err(TicketError::EmptyTicketName.into());
         }
-        if width_cm <= 0.0 || height_cm <= 0.0 {
+        let queue = printer_queue
+        .map(str::trim)
+        .filter(|value| !value.is_empty());
+        let page = match queue {
+            Some(queue) => self.printer_page_size(queue)?,
+            None => PageSize {
+                width_mm: width_cm * 10.0,
+                height_mm: height_cm * 10.0,
+            },
+        };
+        if page.width_mm <= 0.0 || page.height_mm <= 0.0 {
             return Err(TicketError::InvalidDimensions.into());
         }
 
-        let width_mm = width_cm * 10.0;
-        let height_mm = height_cm * 10.0;
         let recorded_at = now_iso();
+        let ticket = self
+        .storage
+        .create_ticket(name, page.width_mm, page.height_mm, &recorded_at)?;
+        let Some(queue) = queue else {
+            return Ok(ticket);
+        };
         self.storage
-        .create_ticket(name, width_mm, height_mm, &recorded_at)
+        .set_ticket_printer_queue(&ticket.id, queue, &recorded_at)?;
+        self.storage
+        .get_ticket(&ticket.id)?
+        .ok_or_else(|| TicketError::TicketNotFound.into())
     }
 
     #[allow(clippy::too_many_arguments)]
@@ -124,13 +151,20 @@ impl TicketService {
         .get_ticket(ticket_id)?
         .ok_or(TicketError::TicketNotFound)?;
         let updated_at = now_iso();
+        let assigned_queue = printer_queue
+        .map(str::trim)
+        .filter(|value| !value.is_empty());
+        if let Some(queue) = assigned_queue {
+            self.storage
+            .upsert_printer_page_size(queue, width_mm, height_mm, &updated_at)?;
+        }
         self.storage.update_ticket(
             ticket_id,
             name.trim(),
             width_mm,
             height_mm,
             existing.background_svg_path.as_deref(),
-            printer_queue.filter(|value| !value.trim().is_empty()),
+            assigned_queue,
             border_style,
             border_width_mm,
             dpi,

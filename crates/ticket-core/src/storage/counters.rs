@@ -176,10 +176,11 @@ impl Storage {
             subtickets.id,
             subtickets.name,
             subtickets.display_label,
-            subtickets.amount_minor,
-            subtickets.currency,
+            COALESCE(records.sold_amount_minor, subtickets.amount_minor) AS amount_minor,
+            COALESCE(NULLIF(TRIM(records.sold_currency), ''), subtickets.currency) AS currency,
             COUNT(*) AS quantity,
-            COALESCE(SUM(subtickets.amount_minor), 0) AS total_minor
+            COALESCE(SUM(COALESCE(records.sold_amount_minor, subtickets.amount_minor)), 0)
+            AS total_minor
             FROM print_records records
             JOIN subtickets ON subtickets.id = records.subticket_id
             WHERE records.ticket_id = ?
@@ -189,8 +190,8 @@ impl Storage {
             subtickets.id,
             subtickets.name,
             subtickets.display_label,
-            subtickets.amount_minor,
-            subtickets.currency,
+            COALESCE(records.sold_amount_minor, subtickets.amount_minor),
+            COALESCE(NULLIF(TRIM(records.sold_currency), ''), subtickets.currency),
             subtickets.sort_order
             ORDER BY records.local_date DESC, subtickets.sort_order, subtickets.recorded_at
             "#,

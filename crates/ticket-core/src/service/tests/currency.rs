@@ -14,6 +14,7 @@ fn price_field() -> TicketFieldInput {
         font_family: "Noto Sans".into(),
         font_size_pt: 12.0,
         font_weight: 400,
+        font_italic: false,
         horizontal_alignment: "center".into(),
         vertical_alignment: "center".into(),
         date_format: "date".into(),
@@ -76,6 +77,59 @@ fn print_one_converts_amount_into_chosen_sale_currency() {
 
     let result = service
     .print_one(&ticket.id, &subticket.id, "2026-08-06", Some("EUR"), None)
+    .expect("print should succeed");
+
+    assert_eq!(result.record.sold_currency.as_deref(), Some("EUR"));
+    assert_eq!(result.record.sold_amount_minor, Some(40));
+}
+
+#[test]
+fn print_one_uses_main_currency_when_price_row_currency_is_stale() {
+    let mut service = service();
+    service
+    .set_main_currency("CZK")
+    .expect("main currency should save");
+    service
+    .storage
+    .store_exchange_rate("CZK", "EUR", 0.04, &now_iso())
+    .expect("exchange rate cache should seed");
+
+    let ticket = service
+    .create_ticket("Zoo", 5.0, 7.0)
+    .expect("ticket should be created");
+    service
+    .storage
+    .replace_fields(&ticket.id, &[price_field()], &now_iso())
+    .expect("price field should save");
+    service
+    .storage
+    .replace_subtickets(
+        &ticket.id,
+        &[SubticketInput {
+                id: String::new(),
+                name: "10 $".into(),
+                amount_minor: 1_000,
+                currency: "USD".into(),
+                display_label: "10 $".into(),
+                keyboard_shortcut: Some("1".into()),
+                enabled: true,
+                sort_order: 0,
+        }],
+        &now_iso(),
+    )
+    .expect("stale currency row should save");
+    let summary = service
+    .ticket_summary(&ticket.id, "2026-08-06")
+    .expect("summary should load");
+
+    let result = service
+    .print_one(
+        &ticket.id,
+        &summary.subtickets[0].id,
+        "2026-08-06",
+        Some("EUR"),
+        None,
+    )
     .expect("print should succeed");
 
     assert_eq!(result.record.sold_currency.as_deref(), Some("EUR"));
@@ -228,4 +282,32 @@ fn print_one_records_the_main_currency_when_no_sale_currency_is_chosen() {
 
     assert_eq!(result.record.sold_currency.as_deref(), Some("CZK"));
     assert_eq!(result.record.sold_amount_minor, Some(1_000));
+}
+
+#[test]
+fn day_sales_keep_recorded_currency_after_main_currency_changes() {
+    let mut service = service();
+    service.set_development_mode(true).ok();
+    service
+    .set_main_currency("USD")
+    .expect("initial main currency should save");
+    let ticket = service
+    .create_ticket("Zoo", 5.0, 7.0)
+    .expect("ticket should be created");
+    let summary = sample_ticket_summary(&mut service, &ticket.id, "2026-08-06");
+    let subticket = &summary.subtickets[0];
+
+    service
+    .print_one(&ticket.id, &subticket.id, "2026-08-06", None, None)
+    .expect("print should succeed");
+    service
+    .set_main_currency("CZK")
+    .expect("new main currency should save");
+
+    let after = service
+    .ticket_summary(&ticket.id, "2026-08-06")
+    .expect("summary should load");
+    assert_eq!(after.day_summaries[0].currency, "USD");
+    assert_eq!(after.day_summaries[0].total_minor, 1_000);
+    assert_eq!(after.day_summaries[0].subtickets[0].currency, "USD");
 }

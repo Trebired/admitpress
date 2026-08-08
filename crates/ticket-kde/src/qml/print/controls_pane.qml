@@ -144,14 +144,13 @@ Item {
 
             DangerButton {
               iconOnly: true
-              flat: true
               text: LocaleText.tr("Reset selection")
               icon.name: AppIcons.pick("reset")
               enabled: printPage.selectedCount() > 0
               onClicked: printPage.resetSelection()
             }
 
-            Controls.ToolButton {
+            Controls.Button {
               text: LocaleText.tr("Edit prices")
               icon.name: AppIcons.pick("edit")
               enabled: printPage.summary !== null
@@ -167,8 +166,8 @@ Item {
             Layout.fillWidth: true
             model: printPage.quantityModel
             numberPadding: printPage.ticketNumberPadding()
-            currentHeader: "Next"
-            stepperHeader: "Quantity"
+            currentHeader: LocaleText.tr("Next")
+            stepperHeader: LocaleText.tr("Quantity")
             maximumQuantity: 10000
             quantityEnabled: !printPage.isCurrentDayLocked()
             emptyText: LocaleText.tr("No prices yet")

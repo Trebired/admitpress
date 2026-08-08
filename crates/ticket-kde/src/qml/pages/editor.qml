@@ -17,6 +17,7 @@ Kirigami.Page {
   property int selectedFieldIndex: -1
   property real canvasScale: 1
   property string backgroundPath: ""
+  property string printerQueue: ""
   property bool snapToGrid: true
   property real gridTargetMm: 2.5
   property string borderStyle: "none"
@@ -123,37 +124,35 @@ Kirigami.Page {
     }
   ]
 
-  RowLayout {
+  ColumnLayout {
     anchors.fill: parent
     spacing: 0
-    layoutDirection: Qt.RightToLeft
 
-    EditorPropertiesPane {
-      id: propertiesPane
-      root: editorPage.root
+    EditorToolbar {
       editor: editorPage
       logic: logic
-      fieldsModel: editorPage.activeFieldsModel
-      fieldPaletteModel: editorPage.activeTicketType === "bulk" ? bulkFieldPaletteModel : classicFieldPaletteModel
-      Layout.preferredWidth: 340
-      Layout.minimumWidth: 280
-      Layout.maximumWidth: 400
-      Layout.fillWidth: false
-      Layout.fillHeight: true
-      LayoutMirroring.enabled: false
+      Layout.fillWidth: true
     }
 
-    ColumnLayout {
+    RowLayout {
       spacing: 0
-      Layout.minimumWidth: 420
+      layoutDirection: Qt.RightToLeft
       Layout.fillWidth: true
       Layout.fillHeight: true
-      LayoutMirroring.enabled: false
 
-      EditorToolbar {
+      EditorPropertiesPane {
+        id: propertiesPane
+        root: editorPage.root
         editor: editorPage
         logic: logic
-        Layout.fillWidth: true
+        fieldsModel: editorPage.activeFieldsModel
+        fieldPaletteModel: editorPage.activeTicketType === "bulk" ? bulkFieldPaletteModel : classicFieldPaletteModel
+        Layout.preferredWidth: 340
+        Layout.minimumWidth: 280
+        Layout.maximumWidth: 400
+        Layout.fillWidth: false
+        Layout.fillHeight: true
+        LayoutMirroring.enabled: false
       }
 
       EditorCanvas {
@@ -162,8 +161,10 @@ Kirigami.Page {
         editor: editorPage
         logic: logic
         fieldsModel: editorPage.activeFieldsModel
+        Layout.minimumWidth: 420
         Layout.fillWidth: true
         Layout.fillHeight: true
+        LayoutMirroring.enabled: false
       }
     }
   }

@@ -53,6 +53,20 @@ Rectangle {
       Controls.ToolTip.text: LocaleText.tr("Redo")
     }
 
+    Item {
+      Layout.fillHeight: true
+      Layout.preferredWidth: 1
+      Layout.leftMargin: editorToolbar.gap
+      Layout.rightMargin: editorToolbar.gap
+
+      Kirigami.Separator {
+        anchors.horizontalCenter: parent.horizontalCenter
+        y: editorToolbar.gap
+        width: 1
+        height: parent.height - editorToolbar.gap * 2
+      }
+    }
+
     Controls.ToolButton {
       icon.name: AppIcons.pick("copy")
       text: LocaleText.tr("Copy")

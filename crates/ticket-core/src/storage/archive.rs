@@ -46,10 +46,10 @@ impl Storage {
                 r#"
                 INSERT INTO ticket_fields (
                 id, ticket_id, template_kind, field_kind, dynamic_kind, text, x_mm, y_mm,
-                width_mm, height_mm, font_family, font_size_pt, font_weight,
+                width_mm, height_mm, font_family, font_size_pt, font_weight, font_italic,
                 horizontal_alignment, vertical_alignment, date_format, prefix, suffix,
                 sort_order, recorded_at, updated_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 "#,
                 params![
                     &field.id,
@@ -65,6 +65,7 @@ impl Storage {
                     &field.font_family,
                     field.font_size_pt,
                     field.font_weight,
+                    field.font_italic,
                     &field.horizontal_alignment,
                     &field.vertical_alignment,
                     normalize_date_format(&field.date_format),

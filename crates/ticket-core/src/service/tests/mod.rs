@@ -4,9 +4,11 @@ use crate::models::DynamicKind;
 mod archive;
 mod backup;
 mod bulk;
+mod calibration;
 mod currency;
 mod export;
 mod printing;
+mod printing_empty;
 mod release;
 mod revert;
 mod save;
@@ -14,7 +16,56 @@ mod settings;
 
 fn service() -> TicketService {
     let path = std::env::temp_dir().join(format!("ticket-service-test-{}", Uuid::new_v4()));
-    TicketService::open_at(path).expect("service should open")
+    let mut service = TicketService::open_at(path).expect("service should open");
+    service
+    .set_development_mode(true)
+    .expect("test service should default to development output");
+    service
+}
+
+fn field_inputs(summary: &TicketSummary) -> Vec<TicketFieldInput> {
+    summary
+    .fields
+    .iter()
+    .map(|field| TicketFieldInput {
+            id: field.id.clone(),
+            template_kind: field.template_kind.clone(),
+            field_kind: field.field_kind.clone(),
+            dynamic_kind: field.dynamic_kind.clone(),
+            text: field.text.clone(),
+            x_mm: field.x_mm,
+            y_mm: field.y_mm,
+            width_mm: field.width_mm,
+            height_mm: field.height_mm,
+            font_family: field.font_family.clone(),
+            font_size_pt: field.font_size_pt,
+            font_weight: field.font_weight,
+            font_italic: field.font_italic,
+            horizontal_alignment: field.horizontal_alignment.clone(),
+            vertical_alignment: field.vertical_alignment.clone(),
+            date_format: field.date_format.clone(),
+            prefix: field.prefix.clone(),
+            suffix: field.suffix.clone(),
+            sort_order: field.sort_order,
+    })
+    .collect()
+}
+
+fn subticket_inputs(summary: &TicketSummary) -> Vec<SubticketInput> {
+    summary
+    .subtickets
+    .iter()
+    .map(|subticket| SubticketInput {
+            id: subticket.id.clone(),
+            name: subticket.name.clone(),
+            amount_minor: subticket.amount_minor,
+            currency: subticket.currency.clone(),
+            display_label: subticket.display_label.clone(),
+            keyboard_shortcut: subticket.keyboard_shortcut.clone(),
+            enabled: subticket.enabled,
+            sort_order: subticket.sort_order,
+    })
+    .collect()
 }
 
 fn sample_ticket_summary(
@@ -40,6 +91,7 @@ fn sample_ticket_summary(
                 font_family: "Noto Sans".into(),
                 font_size_pt: 12.0,
                 font_weight: 400,
+                font_italic: false,
                 horizontal_alignment: "center".into(),
                 vertical_alignment: "center".into(),
                 date_format: "date".into(),

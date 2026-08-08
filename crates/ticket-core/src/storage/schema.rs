@@ -83,6 +83,11 @@ impl Storage {
             "template_kind",
             "template_kind TEXT NOT NULL DEFAULT 'classic'",
         )?;
+        self.add_column_if_missing(
+            "ticket_fields",
+            "font_italic",
+            "font_italic INTEGER NOT NULL DEFAULT 0",
+        )?;
         self.migrate_daily_counters_per_subticket()?;
         self.add_column_if_missing(
             "counter_adjustments",
@@ -97,6 +102,8 @@ impl Storage {
             "sold_amount_minor INTEGER",
         )?;
         self.create_exchange_rate_cache_table()?;
+        self.create_printer_profiles_table()?;
+        self.seed_printer_profiles_from_tickets()?;
         self.migrate_default_number_padding()?;
         self.repair_centered_field_alignment()?;
         Ok(())
@@ -113,6 +120,48 @@ impl Storage {
             PRIMARY KEY (from_currency, to_currency)
             );
             "#,
+        )?;
+        Ok(())
+    }
+
+    fn create_printer_profiles_table(&self) -> Result<()> {
+        self.connection.execute_batch(
+            r#"
+            CREATE TABLE IF NOT EXISTS printer_profiles (
+            queue TEXT PRIMARY KEY,
+            width_mm REAL NOT NULL,
+            height_mm REAL NOT NULL,
+            offset_x_mm REAL NOT NULL DEFAULT 0,
+            offset_y_mm REAL NOT NULL DEFAULT 0,
+            scale_x_percent REAL NOT NULL DEFAULT 100,
+            scale_y_percent REAL NOT NULL DEFAULT 100,
+            recorded_at TEXT NOT NULL,
+            updated_at TEXT NOT NULL
+            );
+            "#,
+        )?;
+        Ok(())
+    }
+
+    fn seed_printer_profiles_from_tickets(&self) -> Result<()> {
+        self.connection.execute(
+            r#"
+            INSERT OR IGNORE INTO printer_profiles (
+            queue, width_mm, height_mm, offset_x_mm, offset_y_mm,
+            scale_x_percent, scale_y_percent, recorded_at, updated_at
+            )
+            SELECT
+            TRIM(printer_queue),
+            MAX(width_mm),
+            MAX(height_mm),
+            0, 0, 100, 100,
+            MIN(recorded_at),
+            MAX(updated_at)
+            FROM tickets
+            WHERE printer_queue IS NOT NULL AND TRIM(printer_queue) <> ''
+            GROUP BY TRIM(printer_queue)
+            "#,
+            [],
         )?;
         Ok(())
     }

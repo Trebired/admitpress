@@ -33,7 +33,7 @@ QtObject {
   }
 
   function priceCurrency(currency) {
-    return currency || root.appState.main_currency || ""
+    return root.appState.main_currency || currency || ""
   }
 
   function saleCurrencyLabelFor(amountMinor, currency) {
@@ -61,11 +61,12 @@ QtObject {
     model.clear()
     const subtickets = page.summary && page.summary.subtickets ? page.summary.subtickets : []
     for (let subticket of subtickets) {
+      const currency = priceCurrency(subticket.currency || "")
       model.append({
           subticket_id: subticket.id,
           amount_minor: subticket.amount_minor,
-          currency: subticket.currency || "",
-          label: saleCurrencyLabelFor(subticket.amount_minor, subticket.currency || ""),
+          currency: currency,
+          label: saleCurrencyLabelFor(subticket.amount_minor, currency),
           display_label: subticket.display_label || subticket.name || "",
           current_next: subticket.next_number_today,
           next_number_today: subticket.next_number_today,
@@ -194,7 +195,11 @@ QtObject {
     root.errorDialogObject.open()
   }
 
-  function submissionBlocked(singleTicket, count) {
+  function showSubmitWarning(message) {
+    root.showPassiveNotification(message, "short")
+  }
+
+  function submissionBlocked(countOnly, singleTicket, count) {
     if (page.isCurrentDayLocked && page.isCurrentDayLocked()) {
       showSubmitError(LocaleText.tr("This day is locked because it already has sales and is not today."))
       return true
@@ -207,6 +212,10 @@ QtObject {
       showSubmitError(LocaleText.tr("Select at least two tickets for a group ticket."))
       return true
     }
+    if (!countOnly && page.hasPrintableContent && !page.hasPrintableContent(singleTicket)) {
+      showSubmitWarning(LocaleText.tr("Add content in the editor before printing this ticket."))
+      return true
+    }
     return false
   }
 
@@ -214,7 +223,7 @@ QtObject {
     if (submitInFlight || root.busy) return
     const requests = selectedRequests()
     const count = selectedCount()
-    if (submissionBlocked(singleTicket, count)) return
+    if (submissionBlocked(countOnly, singleTicket, count)) return
     const directPrint = !countOnly && !singleTicket && count === 1
     const busy = busyText(countOnly, singleTicket, directPrint)
     const success = successText(countOnly, singleTicket, directPrint)

@@ -167,13 +167,29 @@ fn operation_key(record: &PrintRecord) -> String {
 }
 
 fn history_item(record: &PrintRecord, subticket: Option<&Subticket>) -> PrintHistoryItem {
+    let amount_minor = record.sold_amount_minor.unwrap_or_else(|| {
+            subticket
+            .map(|value| value.amount_minor)
+            .unwrap_or_default()
+    });
+    let currency = record
+    .sold_currency
+    .as_deref()
+    .map(str::trim)
+    .filter(|value| !value.is_empty())
+    .map(ToOwned::to_owned)
+    .unwrap_or_else(|| {
+            subticket
+            .map(|value| value.currency.clone())
+            .unwrap_or_default()
+    });
     match subticket {
         Some(subticket) => PrintHistoryItem {
             subticket_id: record.subticket_id.clone(),
             name: subticket.name.clone(),
             display_label: subticket.display_label.clone(),
-            amount_minor: subticket.amount_minor,
-            currency: subticket.currency.clone(),
+            amount_minor,
+            currency,
             quantity: 0,
             total_minor: 0,
             ticket_numbers: Vec::new(),
@@ -182,8 +198,8 @@ fn history_item(record: &PrintRecord, subticket: Option<&Subticket>) -> PrintHis
             subticket_id: record.subticket_id.clone(),
             name: "Unknown price".to_owned(),
             display_label: String::new(),
-            amount_minor: 0,
-            currency: String::new(),
+            amount_minor,
+            currency,
             quantity: 0,
             total_minor: 0,
             ticket_numbers: Vec::new(),

@@ -9,6 +9,9 @@ AppDialog {
 
   property var backend: root ? root.backendObject : null
   property bool verticalOrientation: true
+  property string selectedQueue: ""
+  readonly property bool usesPrinter: selectedQueue.trim() !== ""
+  property var printerProfiles: []
 
   title: LocaleText.tr("Add new ticket")
   dialogWidth: 420
@@ -16,6 +19,14 @@ AppDialog {
   function addTicketSizeCm(input, fallback) {
     const value = Number(input.realValue)
     return Number.isFinite(value) && value > 0 ? value : fallback
+  }
+
+  function applyPrinterSize() {
+    if (!usesPrinter) return
+    const profile = PrinterProfiles.find(printerProfiles, selectedQueue)
+    addWidth.realValue = profile ? profile.width_mm / 10 : 5.0
+    addHeight.realValue = profile ? profile.height_mm / 10 : 7.0
+    verticalOrientation = addHeight.realValue >= addWidth.realValue
   }
 
   function setOrientation(vertical) {
@@ -30,15 +41,18 @@ AppDialog {
 
   onOpened: {
     verticalOrientation = true
+    selectedQueue = ""
     addWidth.realValue = 5.0
     addHeight.realValue = 7.0
+    printerProfiles = PrinterProfiles.fetch(root, backend)
   }
 
   function submit() {
     const data = root.acceptResponse(backend.createTicket(
         addName.text,
         addWidth.realValue,
-        addHeight.realValue
+        addHeight.realValue,
+        addTicketDialog.selectedQueue
       ), LocaleText.tr("Ticket created"))
     if (data) {
       addName.text = ""
@@ -57,10 +71,34 @@ AppDialog {
       placeholderText: LocaleText.tr("Ticket name")
     }
 
+    Controls.Label { text: LocaleText.tr("Printer") }
+    Controls.ComboBox {
+      id: addPrinter
+      Layout.fillWidth: true
+      model: root.printerChoices()
+      currentIndex: 0
+      onActivated: function(index) {
+        addTicketDialog.selectedQueue = index <= 0 ? "" : addPrinter.textAt(index)
+        addTicketDialog.applyPrinterSize()
+      }
+    }
+    Controls.Label {
+      Layout.fillWidth: true
+      wrapMode: Text.WordWrap
+      color: Kirigami.Theme.disabledTextColor
+      text: addTicketDialog.usesPrinter
+      ? LocaleText.tr("The ticket takes the size calibrated for this printer.")
+      : LocaleText.tr("Calibrate a printer in Settings first, or set the size by hand below.")
+    }
+
     Controls.ButtonGroup { id: addOrientationGroup }
-    Controls.Label { text: LocaleText.tr("Orientation") }
+    Controls.Label {
+      text: LocaleText.tr("Orientation")
+      visible: !addTicketDialog.usesPrinter
+    }
     RowLayout {
       Layout.fillWidth: true
+      visible: !addTicketDialog.usesPrinter
       Controls.Button {
         Layout.fillWidth: true
         text: LocaleText.tr("Vertical")
@@ -92,6 +130,7 @@ AppDialog {
           realFrom: 1.0
           realTo: 100.0
           realValue: 5.0
+          enabled: !addTicketDialog.usesPrinter
         }
       }
       ColumnLayout {
@@ -103,6 +142,7 @@ AppDialog {
           realFrom: 1.0
           realTo: 100.0
           realValue: 7.0
+          enabled: !addTicketDialog.usesPrinter
         }
       }
     }

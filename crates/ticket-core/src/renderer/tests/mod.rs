@@ -3,6 +3,7 @@ use super::*;
 mod dynamic;
 mod formatting;
 mod image;
+mod layout;
 
 fn rendered_font_size(svg: &str) -> f64 {
     let marker = r#"font-size=""#;
@@ -83,6 +84,7 @@ fn field_base(ticket: &Ticket, id: &str, field_kind: FieldKind) -> TicketField {
         font_family: "Sans Serif".into(),
         font_size_pt: 12.0,
         font_weight: 400,
+        font_italic: false,
         horizontal_alignment: "left".into(),
         vertical_alignment: "top".into(),
         date_format: "date".into(),

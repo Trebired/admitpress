@@ -11,7 +11,8 @@ desktop first; it then appears here.
 
 ## Development output
 
-**Development output, do not use paper** is on by default.
+**Development output, do not use paper** is on by default only when launched
+with `bun run dev`. Installed and normal runs default it off.
 
 | Setting | Print actions do |
 | --- | --- |

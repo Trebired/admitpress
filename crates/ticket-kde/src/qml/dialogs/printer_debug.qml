@@ -26,6 +26,8 @@ ColumnLayout {
 
   RowLayout {
     Layout.fillWidth: true
+    spacing: Kirigami.Units.smallSpacing
+
     Controls.Label {
       Layout.fillWidth: true
       text: LocaleText.tr("Printer debug")
@@ -35,6 +37,27 @@ ColumnLayout {
       running: visible
       Layout.preferredWidth: Kirigami.Units.iconSizes.smallMedium
       Layout.preferredHeight: Kirigami.Units.iconSizes.smallMedium
+    }
+    Controls.Button {
+      icon.name: AppIcons.pick("wizard")
+      text: LocaleText.tr("Repair")
+      onClicked: repairMenu.popup()
+
+      Controls.Menu {
+        id: repairMenu
+
+        Controls.MenuItem {
+          icon.name: AppIcons.pick("wizard")
+          text: LocaleText.tr("Fix")
+          onTriggered: settingsDialog.runPrinterFix(false)
+        }
+
+        Controls.MenuItem {
+          icon.name: AppIcons.pick("secure")
+          text: LocaleText.tr("Repair as administrator")
+          onTriggered: if (appRoot) appRoot.sudoFixDialogObject.open()
+        }
+      }
     }
     Controls.Button {
       icon.name: AppIcons.pick("refresh")
@@ -47,23 +70,6 @@ ColumnLayout {
       text: LocaleText.tr("Copy logs")
       enabled: diagnosticsTextArea.text.length > 0
       onClicked: printerDebug.copyDiagnosticsText()
-    }
-  }
-
-  RowLayout {
-    Layout.fillWidth: true
-    Controls.Button {
-      Layout.fillWidth: true
-      text: LocaleText.tr("Repair printer")
-      icon.name: AppIcons.pick("wizard")
-      onClicked: settingsDialog.runPrinterFix(false)
-    }
-    Controls.Button {
-      Layout.fillWidth: true
-      text: LocaleText.tr("Repair as administrator")
-      icon.name: AppIcons.pick("secure")
-      highlighted: true
-      onClicked: if (appRoot) appRoot.sudoFixDialogObject.open()
     }
   }
 
