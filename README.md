@@ -5,7 +5,7 @@
   <img src="crates/ticket-kde/src/qml/assets/logo-light.svg" alt="AdmitPress" width="360">
 </picture>
 
-**Design admission tickets and print them in sequence, so every ticket leaving the printer carries the next number.**
+**Design, sell, and print admission tickets from one desktop app — sequential numbering, group tickets, multi-currency pricing, and a full sales record included.**
 
 [![License](https://img.shields.io/badge/license-AGPL--3.0--only-blue)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Linux-lightgrey)](#install)
