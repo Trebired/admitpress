@@ -4,6 +4,11 @@ All notable changes to AdmitPress will be documented here.
 
 This project follows semantic versioning once published.
 
+## Unreleased
+
+- Added a ticket list sort order on the Tickets page: recent activity (the default), alphabetical, creation date, or a manual order dragged into place in a new Reorder tickets dialog. The choice and the manual order persist across restarts.
+- Fixed the print page's "No tickets selected" summary staying in English regardless of the UI language.
+
 ## 0.2.0
 
 - Added a Printer calibration dialog, opened from Settings, separate from the settings form itself. It carries its own printer choice; picking a printer loads that printer's paper size and correction into the dialog without touching anything else. Each printer queue carries the paper size it holds, prints a sheet of edge rulers, corner marks, measured bars and a centre cross at exactly that size, and stores an offset and scale correction measured from that sheet. The correction is applied to printed output only, never to on-screen previews.

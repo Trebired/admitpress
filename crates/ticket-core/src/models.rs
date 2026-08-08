@@ -248,6 +248,8 @@ pub struct ApplicationState {
     pub main_currency: String,
     pub available_currencies: Vec<CurrencyOption>,
     pub ui_language: String,
+    pub home_sort_mode: String,
+    pub home_ticket_order: Vec<String>,
 }
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct PrinterCommandReport {

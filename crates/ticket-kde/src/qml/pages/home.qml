@@ -19,6 +19,28 @@ Kirigami.ScrollablePage {
       interactiveResizeEnabled: true
   })
 
+  function sortChoices() {
+    return [
+      { value: "activity", label: LocaleText.tr("Recent activity") },
+      { value: "alphabetical", label: LocaleText.tr("Alphabetical") },
+      { value: "created", label: LocaleText.tr("Creation date") },
+      { value: "manual", label: LocaleText.tr("Manual order") }
+    ]
+  }
+
+  function sortChoiceIndex() {
+    const mode = root.appState.home_sort_mode || "activity"
+    const index = homePage.sortChoices().findIndex(function(choice) {
+        return choice.value === mode
+    })
+    return index < 0 ? 0 : index
+  }
+
+  function applySortMode(mode) {
+    const data = root.acceptResponse(root.backendObject.setHomeSortMode(mode))
+    if (data && mode === "manual") root.reorderTicketsDialogObject.openWithCurrentTickets()
+  }
+
   ColumnLayout {
     width: homePage.availableWidth
     spacing: Kirigami.Units.largeSpacing
@@ -45,6 +67,37 @@ Kirigami.ScrollablePage {
       text: LocaleText.tr("No tickets yet")
       explanation: LocaleText.tr("Create a ticket, position dynamic fields, add prices, and print.")
       helpfulAction: addTicketAction
+    }
+
+    RowLayout {
+      Layout.fillWidth: true
+      visible: root.appState.tickets && root.appState.tickets.length > 1
+      spacing: Kirigami.Units.smallSpacing
+
+      Controls.Label {
+        text: LocaleText.tr("Sort by")
+      }
+
+      Controls.ComboBox {
+        id: sortCombo
+        Layout.preferredWidth: implicitWidth
+        model: homePage.sortChoices()
+        textRole: "label"
+        valueRole: "value"
+        currentIndex: homePage.sortChoiceIndex()
+        onActivated: function(index) {
+          homePage.applySortMode(sortCombo.valueAt(index))
+        }
+      }
+
+      Controls.ToolButton {
+        visible: root.appState.home_sort_mode === "manual"
+        text: LocaleText.tr("Reorder tickets")
+        icon.name: AppIcons.pick("moveHandle")
+        onClicked: root.reorderTicketsDialogObject.openWithCurrentTickets()
+      }
+
+      Item { Layout.fillWidth: true }
     }
 
     Repeater {

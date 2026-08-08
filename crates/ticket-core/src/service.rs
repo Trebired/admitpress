@@ -38,6 +38,7 @@ mod day {
     mod export;
 }
 mod history;
+mod home_sort;
 mod image;
 mod lifecycle;
 mod printer;
@@ -51,6 +52,7 @@ mod utils;
 mod tests;
 
 use config::*;
+use home_sort::*;
 use image::*;
 use printer::*;
 use render::*;

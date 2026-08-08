@@ -129,11 +129,7 @@ AppDialog {
 
         DropArea {
           anchors.fill: parent
-          onEntered: (drag) => {
-            if (drag.source && drag.source !== priceRow) {
-              pricesModel.move(drag.source.index, priceRow.index, 1)
-            }
-          }
+          onEntered: (drag) => DragReorder.moveOnDrop(pricesModel, drag, priceRow, priceRow.index)
         }
       }
     }

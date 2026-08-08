@@ -7,6 +7,7 @@ mod bulk;
 mod calibration;
 mod currency;
 mod export;
+mod home_sort;
 mod printing;
 mod printing_empty;
 mod release;

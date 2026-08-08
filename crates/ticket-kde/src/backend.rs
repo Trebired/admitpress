@@ -104,18 +104,10 @@ pub mod qobject {
         );
 
         #[qinvokable]
-        fn import_background(
-            self: Pin<&mut Self>,
-            ticket_id: &QString,
-            source_path: &QString,
-        ) -> QString;
+        fn import_background(self: Pin<&mut Self>, ticket_id: &QString, source_path: &QString) -> QString;
 
         #[qinvokable]
-        fn import_image(
-            self: Pin<&mut Self>,
-            ticket_id: &QString,
-            source_path: &QString,
-        ) -> QString;
+        fn import_image(self: Pin<&mut Self>, ticket_id: &QString, source_path: &QString) -> QString;
 
         #[qinvokable]
         fn delete_ticket(self: Pin<&mut Self>, ticket_id: &QString) -> QString;
@@ -209,11 +201,7 @@ pub mod qobject {
         ) -> QString;
 
         #[qinvokable]
-        fn revert_last_sale(
-            self: Pin<&mut Self>,
-            ticket_id: &QString,
-            local_date: &QString,
-        ) -> QString;
+        fn revert_last_sale(self: Pin<&mut Self>, ticket_id: &QString, local_date: &QString) -> QString;
 
         #[qinvokable]
         fn adjust_counter(
@@ -294,6 +282,12 @@ pub mod qobject {
         fn set_ui_language(self: Pin<&mut Self>, language: &QString) -> QString;
 
         #[qinvokable]
+        fn set_home_sort_mode(self: Pin<&mut Self>, mode: &QString) -> QString;
+
+        #[qinvokable]
+        fn set_home_ticket_order(self: Pin<&mut Self>, order_json: &QString) -> QString;
+
+        #[qinvokable]
         fn ensure_main_currency(self: Pin<&mut Self>, locale: &QString) -> QString;
 
         #[qinvokable]
@@ -346,6 +340,7 @@ mod backup;
 mod calibration;
 mod currency;
 mod helpers;
+mod home_sort;
 mod lifecycle;
 mod printing;
 mod release;

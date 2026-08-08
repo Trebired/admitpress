@@ -959,3 +959,27 @@ _version: 2
 "Reset calibration fields":
   en: "Reset calibration fields"
   cs: "Obnovit kalibrační pole"
+"Sort by":
+  en: "Sort by"
+  cs: "Řadit podle"
+"Recent activity":
+  en: "Recent activity"
+  cs: "Nedávná aktivita"
+"Alphabetical":
+  en: "Alphabetical"
+  cs: "Abecedně"
+"Creation date":
+  en: "Creation date"
+  cs: "Data vytvoření"
+"Manual order":
+  en: "Manual order"
+  cs: "Vlastní pořadí"
+"Reorder tickets":
+  en: "Reorder tickets"
+  cs: "Přeuspořádat vstupenky"
+"Drag tickets into the order you want them to appear in.":
+  en: "Drag tickets into the order you want them to appear in."
+  cs: "Přetáhněte vstupenky do pořadí, ve kterém je chcete zobrazit."
+"Ticket order updated":
+  en: "Ticket order updated"
+  cs: "Pořadí vstupenek aktualizováno"

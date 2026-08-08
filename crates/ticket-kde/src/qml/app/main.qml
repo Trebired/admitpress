@@ -26,6 +26,7 @@ Kirigami.ApplicationWindow {
   property alias addTicketDialogObject: dialogRegistry.addTicketDialogObject
   property alias settingsDialogObject: dialogRegistry.settingsDialogObject
   property alias calibrationDialogObject: dialogRegistry.calibrationDialogObject
+  property alias reorderTicketsDialogObject: dialogRegistry.reorderTicketsDialogObject
   property alias sudoFixDialogObject: dialogRegistry.sudoFixDialogObject
   property alias backupsDialogObject: dialogRegistry.backupsDialogObject
   property alias updateDialogObject: dialogRegistry.updateDialogObject
@@ -65,7 +66,9 @@ Kirigami.ApplicationWindow {
       data_dir: "data",
       main_currency: "",
       available_currencies: [],
-      ui_language: "en"
+      ui_language: "en",
+      home_sort_mode: "activity",
+      home_ticket_order: []
     }
   }
 

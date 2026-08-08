@@ -131,6 +131,10 @@ impl TicketService {
             });
         }
 
+        let home_sort_mode = self.home_sort_mode()?;
+        let home_ticket_order = self.home_ticket_order()?;
+        sort_ticket_summaries(&mut summaries, &home_sort_mode, &home_ticket_order);
+
         Ok(ApplicationState {
                 tickets: summaries,
                 printer_queues: self.cached_printer_queues.clone(),
@@ -140,6 +144,8 @@ impl TicketService {
                 main_currency: self.main_currency.clone(),
                 available_currencies: self.available_currencies(),
                 ui_language: self.ui_language.clone(),
+                home_sort_mode,
+                home_ticket_order,
         })
     }
 

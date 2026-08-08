@@ -136,7 +136,7 @@ QtObject {
 
   function selectionSummaryText() {
     page.selectionRevision
-    return selectedCount() === 0 ? "No tickets selected" : selectionText()
+    return selectedCount() === 0 ? LocaleText.tr("No tickets selected") : selectionText()
   }
 
   function canSubmitSelection(singleTicket) {

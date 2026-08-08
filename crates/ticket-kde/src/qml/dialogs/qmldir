@@ -23,3 +23,4 @@ RevertLastDialog 1.0 revert_last.qml
 ErrorDialog 1.0 error.qml
 UpdateDialog 1.0 update.qml
 CalibrationDialog 1.0 calibration.qml
+ReorderTicketsDialog 1.0 reorder_tickets.qml

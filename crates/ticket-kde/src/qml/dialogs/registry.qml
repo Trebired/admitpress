@@ -8,6 +8,7 @@ Item {
   property alias addTicketDialogObject: addTicketDialog
   property alias settingsDialogObject: settingsDialog
   property alias calibrationDialogObject: calibrationDialog
+  property alias reorderTicketsDialogObject: reorderTicketsDialog
   property alias sudoFixDialogObject: sudoFixDialog
   property alias backupsDialogObject: backupsDialog
   property alias updateDialogObject: updateDialog
@@ -31,6 +32,7 @@ Item {
   AddTicketDialog { id: addTicketDialog; root: dialogRegistry.root; backend: dialogRegistry.backend }
   SettingsDialog { id: settingsDialog; root: dialogRegistry.root; backend: dialogRegistry.backend }
   CalibrationDialog { id: calibrationDialog; root: dialogRegistry.root; backend: dialogRegistry.backend }
+  ReorderTicketsDialog { id: reorderTicketsDialog; root: dialogRegistry.root; backend: dialogRegistry.backend }
   SudoFixDialog { id: sudoFixDialog; root: dialogRegistry.root; backend: dialogRegistry.backend }
   BackupsDialog { id: backupsDialog; root: dialogRegistry.root }
   UpdateDialog { id: updateDialog; root: dialogRegistry.root }
