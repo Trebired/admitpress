@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "category": "app",
+  "subcategory": "desktop",
+  "status": "active",
+  "description": {
+    "en": "A desktop app for designing, selling and printing admission tickets, with its own numbering and sales record.",
+    "cs": "Desktopová aplikace pro návrh, prodej a tisk vstupenek, s vlastním číslováním a záznamem prodejů."
+  }
+}
