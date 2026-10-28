@@ -16,10 +16,6 @@
 
 ---
 
-AdmitPress owns the ticket layout, the daily number sequence, the sales record, and the print job it sends to CUPS. The operator owns the printer, the paper, and the decision to print or only record a sale. AdmitPress does not own the printer driver, the CUPS queue configuration, or the spreadsheet the exported sales end up in.
-
-AdmitPress is a Trebired product, licensed under the GNU Affero General Public License v3.0 only. The full text is in [`LICENSE`](LICENSE). Anyone distributing AdmitPress, or a modified version of it, including over a network, releases their work under the same terms.
-
 ## Contents
 
 - [Install](#install)
